@@ -1,0 +1,74 @@
+// LEXICAL GRAMMAR
+
+%lex
+
+%%
+
+\s+       /* Skip whitespaces */
+
+\d+       return 'NUMBER'
+
+[+\-]     return 'ADDITIVE_OPERATOR'
+[*/]     return 'MULTIPLICATIVE_OPERATOR'
+
+
+/lex
+
+// Module include - Code included "as is"
+
+%{
+
+function BinaryExpression(op, left, right){
+  return {
+      type: 'BinaryExpression',
+      op,
+      left,
+      right
+    }
+}
+
+%}
+
+
+// SYNTACTIC GRAMMAR
+
+%%
+
+Expression
+  : AdditiveExpression
+  ;
+
+AdditiveExpression
+  : AdditiveExpression ADDITIVE_OPERATOR MultiplicativeExpression
+      { $$ = BinaryExpression($2, $1, $3) }
+  | MultiplicativeExpression
+  ;
+
+MultiplicativeExpression
+  : MultiplicativeExpression MULTIPLICATIVE_OPERATOR PrimaryExpression
+      { $$ = BinaryExpression($2, $1, $3) }
+  | PrimaryExpression
+  ;
+
+PrimaryExpression
+  : Literal
+  | ParenthesizedExpression
+  ;
+
+Literal
+  : NumericLiteral
+  ;
+
+NumericLiteral
+  : NUMBER
+      {
+          $$ = {
+            type: 'NumericLiteral',
+            value: Number($1)
+          }
+      } 
+  ;
+
+ParenthesizedExpression
+  : '(' Expression ')' { $$ = $2 }
+  ;
