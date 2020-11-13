@@ -1,0 +1,4 @@
+(executable
+ (name Bin)
+ (public_name bin)
+ (libraries lib))

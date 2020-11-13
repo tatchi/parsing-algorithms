@@ -102,3 +102,15 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+#Reason
+
+.merlin
+node_modules/
+_build
+_esy
+_release
+*.byte
+*.native
+*.install
