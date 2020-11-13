@@ -20,6 +20,7 @@ let newline = '\r' | '\n' | "\r\n"
 
 rule read_token =
   parse
-  | "(" { LPARENT }
+  | int { NUMBER (int_of_string (Lexing.lexeme lexbuf))}
+  | '+' | '-' { ADDITIVE_OPERATOR (Lexing.lexeme lexbuf)}
   | eof { EOF }
   | _ {raise (SyntaxError ("Lexer - Illegal character: " ^ Lexing.lexeme lexbuf)) }
