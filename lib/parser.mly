@@ -1,4 +1,8 @@
 
+%{
+  open Parsed_Ast
+%}
+
 /* Token definitions */
 
 %token <string> ADDITIVE_OPERATOR
@@ -6,7 +10,9 @@
 %token EOF
 
 /* Specify starting production */
-%start <int option> program 
+%start program 
+
+%type <Parsed_Ast.t option> program
 
 
 %% /* Start grammar productions */
@@ -17,5 +23,5 @@ program:
   ;
 
 value: 
-  | n1 = NUMBER; ADDITIVE_OPERATOR; n2 = NUMBER { n1+n2 }
+  | left = NUMBER; op = ADDITIVE_OPERATOR; right = NUMBER { {op; left; right} }
   ;
