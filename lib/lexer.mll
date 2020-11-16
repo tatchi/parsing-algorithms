@@ -22,10 +22,9 @@ rule read_token =
   parse
   | whitespace    { read_token lexbuf }
   | int { NUMBER (int_of_string (Lexing.lexeme lexbuf))}
-  | '+' { PLUS }
-  | '*' { TIME }
+  | '+' | '-' { ADDITIVE_OPERATOR (Lexing.lexeme lexbuf)}
+  | '*' | '/' { MULTIPLICATIVE_OPERATOR (Lexing.lexeme lexbuf)}
   | '(' { LPAREN }
   | ')' { RPAREN }
-  (* | '+' | '-' { ADDITIVE_OPERATOR (Lexing.lexeme lexbuf)} *)
   | eof { EOF }
   | _ {raise (SyntaxError ("Lexer - Illegal character: " ^ Lexing.lexeme lexbuf)) }

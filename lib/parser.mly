@@ -1,14 +1,13 @@
 
-// %{
-//   open Parsed_Ast
-// %}
+%{
+  open Parsed_Ast
+%}
 
 /* Token definitions */
 
-// %token <string> ADDITIVE_OPERATOR
 %token <int> NUMBER
-%token PLUS
-%token TIME
+%token <string> ADDITIVE_OPERATOR
+%token <string> MULTIPLICATIVE_OPERATOR
 %token LPAREN
 %token RPAREN
 %token EOF
@@ -16,7 +15,7 @@
 /* Specify starting production */
 %start program
 
-%type <int> program
+%type <Parsed_Ast.t> program
 
 %% /* Start grammar productions */
 
@@ -28,12 +27,12 @@ Expression:
   ;
 
 AdditiveExpression: 
-  | expr1 = AdditiveExpression PLUS expr2 = MultiplicativeExpression { expr1 + expr2 }
+  | left = AdditiveExpression op = ADDITIVE_OPERATOR right = MultiplicativeExpression { BinaryExpression({left; op; right}) }
   | expr = MultiplicativeExpression { expr }
   ;
 
 MultiplicativeExpression:
-  | expr1 = MultiplicativeExpression TIME expr2 = PrimaryExpression { expr1 * expr2 }
+  | left = MultiplicativeExpression op = MULTIPLICATIVE_OPERATOR right = PrimaryExpression { BinaryExpression({left; op; right})}
   | expr = PrimaryExpression { expr }
   ;
 
@@ -47,7 +46,7 @@ Literal:
   ;
 
 NumericLiteral:
-  | n = NUMBER { n }
+  | n = NUMBER { NumericLiteral(n) }
   ;
 
 ParenthesizedExpression:

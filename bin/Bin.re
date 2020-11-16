@@ -7,6 +7,16 @@ let parse = Lib.Parser.program(Lib.Lexer.read_token);
 // | Some(res) => print_endline(string_of_int(res))
 // };
 
-let res = (parse(Lexing.from_string("(2+4)*3")));
+let res = parse(Lexing.from_string("2+3"));
 
-print_endline(string_of_int(res));
+let rec toString = node => {
+  Lib.Parsed_Ast.(
+    switch (node) {
+    | NumericLiteral(n) => "NumericLiteral(" ++ string_of_int(n) ++ ")"
+    | BinaryExpression({left, op, right}) =>
+      toString(left) ++ op ++ toString(right)
+    }
+  );
+};
+
+print_endline(toString(res));

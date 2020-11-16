@@ -1,7 +1,10 @@
-type binaryExpression = {
+type expression =
+  | NumericLiteral(int)
+  | BinaryExpression(binaryExpression)
+and binaryExpression = {
   op: string,
-  left: int,
-  right: int,
+  left: expression,
+  right: expression,
 };
 
-type t = binaryExpression;
+type t = expression;
