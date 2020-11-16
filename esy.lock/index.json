@@ -1,5 +1,5 @@
 {
-  "checksum": "ab93eece39b7fdc97e81e23458c3dfd3",
+  "checksum": "4221dedb264bb464d421405515497f11",
   "root": "hello-reason@link-dev:./esy.json",
   "node": {
     "refmterr@3.3.2@d41d8cd9": {
@@ -43,8 +43,8 @@
       "source": { "type": "link-dev", "path": ".", "manifest": "esy.json" },
       "overrides": [],
       "dependencies": [
-        "ocaml@4.10.1002@d41d8cd9", "@opam/dune@opam:2.7.1@f5f493bc",
-        "@esy-ocaml/reason@3.6.2@d41d8cd9"
+        "ocaml@4.10.1002@d41d8cd9", "@opam/yojson@opam:1.7.0@7056d985",
+        "@opam/dune@opam:2.7.1@f5f493bc", "@esy-ocaml/reason@3.6.2@d41d8cd9"
       ],
       "devDependencies": [
         "refmterr@3.3.2@d41d8cd9",

@@ -9,14 +9,16 @@ let parse = Lib.Parser.program(Lib.Lexer.read_token);
 
 let res = parse(Lexing.from_string("2+3"));
 
-let rec toString = node => {
-  Lib.Parsed_Ast.(
-    switch (node) {
-    | NumericLiteral(n) => "NumericLiteral(" ++ string_of_int(n) ++ ")"
-    | BinaryExpression({left, op, right}) =>
-      toString(left) ++ op ++ toString(right)
-    }
-  );
-};
+// let rec toString = node => {
+//   Lib.Parsed_Ast.(
+//     switch (node) {
+//     | NumericLiteral(n) => "NumericLiteral(" ++ string_of_int(n) ++ ")"
+//     | BinaryExpression({left, op, right}) =>
+//       toString(left) ++ op ++ toString(right)
+//     }
+//   );
+// };
 
-print_endline(toString(res));
+let json = Lib.Parsed_Ast.toString(res);
+
+print_endline(json);

@@ -20,6 +20,7 @@
   "dependencies": {
     "@opam/dune": ">=2.6",
     "@esy-ocaml/reason": ">= 3.6.0 < 4.0.0",
+    "@opam/yojson": "~1.7.0",
     "ocaml": "~4.10.0"
   },
   "devDependencies": {
