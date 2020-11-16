@@ -11,22 +11,26 @@
 %token TIME
 %token EOF
 
-
-%left PLUS
-%left TIME
-
 /* Specify starting production */
 %start program
 
 %type <int> program
 
-
 %% /* Start grammar productions */
 
 program: 
-  | e = E EOF { e }
+  | e = AdditiveExpression EOF { e }
 
-E: 
-  | n1 = E PLUS n2 = E { n1 + n2 }
-  | n1 = E TIME n2 = E { n1 * n2 }
+AdditiveExpression: 
+  | expr1 = AdditiveExpression PLUS expr2 = MultiplicativeExpression { expr1 + expr2 }
+  | expr = MultiplicativeExpression { expr }
+  ;
+
+MultiplicativeExpression:
+  | expr1 = MultiplicativeExpression TIME expr2 = PrimaryExpression { expr1 * expr2 }
+  | expr = PrimaryExpression { expr }
+  ;
+
+PrimaryExpression:
   | n = NUMBER { n }
+  ;
