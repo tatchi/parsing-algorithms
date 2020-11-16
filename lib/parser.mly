@@ -9,8 +9,8 @@
 %token <int> NUMBER
 %token PLUS
 %token TIME
-%token LPARENT
-%token RPARENT
+%token LPAREN
+%token RPAREN
 %token EOF
 
 /* Specify starting production */
@@ -21,7 +21,11 @@
 %% /* Start grammar productions */
 
 program: 
-  | e = AdditiveExpression EOF { e }
+  | e = Expression EOF { e }
+
+Expression:
+  | expr = AdditiveExpression { expr }
+  ;
 
 AdditiveExpression: 
   | expr1 = AdditiveExpression PLUS expr2 = MultiplicativeExpression { expr1 + expr2 }
@@ -34,6 +38,18 @@ MultiplicativeExpression:
   ;
 
 PrimaryExpression:
+  | lt = Literal { lt }
+  | p = ParenthesizedExpression { p }
+  ;
+
+Literal:
+  | n = NumericLiteral { n }
+  ;
+
+NumericLiteral:
   | n = NUMBER { n }
-  | LPARENT expr = AdditiveExpression RPARENT { expr }
+  ;
+
+ParenthesizedExpression:
+  | LPAREN expr = Expression RPAREN { expr }
   ;
