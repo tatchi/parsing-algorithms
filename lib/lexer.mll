@@ -24,6 +24,8 @@ rule read_token =
   | int { NUMBER (int_of_string (Lexing.lexeme lexbuf))}
   | '+' { PLUS }
   | '*' { TIME }
+  | '(' { LPARENT }
+  | ')' { RPARENT }
   (* | '+' | '-' { ADDITIVE_OPERATOR (Lexing.lexeme lexbuf)} *)
   | eof { EOF }
   | _ {raise (SyntaxError ("Lexer - Illegal character: " ^ Lexing.lexeme lexbuf)) }

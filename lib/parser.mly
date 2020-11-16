@@ -9,6 +9,8 @@
 %token <int> NUMBER
 %token PLUS
 %token TIME
+%token LPARENT
+%token RPARENT
 %token EOF
 
 /* Specify starting production */
@@ -33,4 +35,5 @@ MultiplicativeExpression:
 
 PrimaryExpression:
   | n = NUMBER { n }
+  | LPARENT expr = AdditiveExpression RPARENT { expr }
   ;

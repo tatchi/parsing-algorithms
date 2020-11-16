@@ -7,6 +7,6 @@ let parse = Lib.Parser.program(Lib.Lexer.read_token);
 // | Some(res) => print_endline(string_of_int(res))
 // };
 
-let res = (parse(Lexing.from_string("2+4*3")));
+let res = (parse(Lexing.from_string("(2+4)*3")));
 
 print_endline(string_of_int(res));
