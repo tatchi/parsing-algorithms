@@ -6,8 +6,10 @@
 /* Token definitions */
 
 %token <int> NUMBER
-%token <string> ADDITIVE_OPERATOR
-%token <string> MULTIPLICATIVE_OPERATOR
+%token PLUS
+%token MINUS
+%token MULT
+%token DIV
 %token LPAREN
 %token RPAREN
 %token EOF
@@ -27,12 +29,12 @@ Expression:
   ;
 
 AdditiveExpression: 
-  | left = AdditiveExpression op = ADDITIVE_OPERATOR right = MultiplicativeExpression { BinaryExpression({left; op=if op = "+" then BinOpPlus else BinOpMinus; right}) }
+  | left = AdditiveExpression op=additiveOp right = MultiplicativeExpression { BinaryExpression({left; op; right}) }
   | expr = MultiplicativeExpression { expr }
   ;
 
 MultiplicativeExpression:
-  | left = MultiplicativeExpression op = MULTIPLICATIVE_OPERATOR right = PrimaryExpression { BinaryExpression({left; op=if op = "*" then BinOpMult else BinOpDiv; right})}
+  | left = MultiplicativeExpression op=multiplicativeOp right = PrimaryExpression { BinaryExpression({left; op; right})}
   | expr = PrimaryExpression { expr }
   ;
 
@@ -52,3 +54,14 @@ NumericLiteral:
 ParenthesizedExpression:
   | LPAREN expr = Expression RPAREN { expr }
   ;
+
+
+/* Operator expressions */
+
+%inline additiveOp:
+| PLUS { BinOpPlus }
+| MINUS { BinOpMinus }
+
+%inline multiplicativeOp:
+| MULT { BinOpMult }
+| DIV { BinOpDiv }

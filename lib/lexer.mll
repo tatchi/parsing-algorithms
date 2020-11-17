@@ -22,8 +22,10 @@ rule read_token =
   parse
   | whitespace    { read_token lexbuf }
   | int { NUMBER (int_of_string (Lexing.lexeme lexbuf))}
-  | '+' | '-' { ADDITIVE_OPERATOR (Lexing.lexeme lexbuf)}
-  | '*' | '/' { MULTIPLICATIVE_OPERATOR (Lexing.lexeme lexbuf)}
+  | '+' { PLUS }
+  | '-' { MINUS }
+  | '*' { MULT }
+  | '/' { DIV }
   | '(' { LPAREN }
   | ')' { RPAREN }
   | eof { EOF }
