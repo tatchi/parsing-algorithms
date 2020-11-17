@@ -27,12 +27,12 @@ Expression:
   ;
 
 AdditiveExpression: 
-  | left = AdditiveExpression op = ADDITIVE_OPERATOR right = MultiplicativeExpression { BinaryExpression({left; op; right}) }
+  | left = AdditiveExpression op = ADDITIVE_OPERATOR right = MultiplicativeExpression { BinaryExpression({left; op=if op = "+" then BinOpPlus else BinOpMinus; right}) }
   | expr = MultiplicativeExpression { expr }
   ;
 
 MultiplicativeExpression:
-  | left = MultiplicativeExpression op = MULTIPLICATIVE_OPERATOR right = PrimaryExpression { BinaryExpression({left; op; right})}
+  | left = MultiplicativeExpression op = MULTIPLICATIVE_OPERATOR right = PrimaryExpression { BinaryExpression({left; op=if op = "*" then BinOpMult else BinOpDiv; right})}
   | expr = PrimaryExpression { expr }
   ;
 

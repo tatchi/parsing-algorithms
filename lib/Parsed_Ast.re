@@ -1,8 +1,22 @@
+type binOp =
+  | BinOpPlus
+  | BinOpMinus
+  | BinOpMult
+  | BinOpDiv;
+
+let string_of_binOp = binOp =>
+  switch (binOp) {
+  | BinOpPlus => "+"
+  | BinOpMinus => "-"
+  | BinOpMult => "*"
+  | BinOpDiv => "/"
+  };
+
 type expression =
   | NumericLiteral(int)
   | BinaryExpression(binaryExpression)
 and binaryExpression = {
-  op: string,
+  op: binOp,
   left: expression,
   right: expression,
 };
@@ -16,7 +30,7 @@ let rec toJson = exp => {
   | BinaryExpression(binExp) =>
     `Assoc([
       ("type", `String("BinaryExpression")),
-      ("op", `String(binExp.op)),
+      ("op", `String(string_of_binOp(binExp.op))),
       ("left", toJson(binExp.left)),
       ("right", toJson(binExp.right)),
     ])
@@ -26,4 +40,4 @@ let rec toJson = exp => {
 let toString = exp => {
   let json = toJson(exp);
   Yojson.Safe.pretty_to_string(json);
-}
+};
