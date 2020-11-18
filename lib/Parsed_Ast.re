@@ -12,7 +12,11 @@ let string_of_binOp = binOp =>
   | BinOpDiv => "/"
   };
 
-type expression =
+type statement =
+  | ExpressionStatement(expressionStatement)
+and expressionStatement =
+  | Expression(expression)
+and expression =
   | NumericLiteral(int)
   | BinaryExpression(binaryExpression)
 and binaryExpression = {
@@ -21,9 +25,9 @@ and binaryExpression = {
   right: expression,
 };
 
-type t = expression;
+type t = statement;
 
-let rec toJson = exp => {
+let rec expr_to_json = exp => {
   switch (exp) {
   | NumericLiteral(n) =>
     `Assoc([("type", `String("NumericLiteral")), ("value", `Int(n))])
@@ -31,13 +35,28 @@ let rec toJson = exp => {
     `Assoc([
       ("type", `String("BinaryExpression")),
       ("op", `String(string_of_binOp(binExp.op))),
-      ("left", toJson(binExp.left)),
-      ("right", toJson(binExp.right)),
+      ("left", expr_to_json(binExp.left)),
+      ("right", expr_to_json(binExp.right)),
     ])
   };
 };
 
-let toString = exp => {
-  let json = toJson(exp);
+let expressionStatement_to_json = exprStatement => {
+  switch (exprStatement) {
+  | Expression(exp) => expr_to_json(exp)
+  };
+};
+
+let toJson = statement =>
+  switch (statement) {
+  | ExpressionStatement(exprStatement) =>
+    `Assoc([
+      ("type", `String("ExpressionStatement")),
+      ("expression", expressionStatement_to_json(exprStatement)),
+    ])
+  };
+
+let toString = statement => {
+  let json = toJson(statement);
   Yojson.Safe.pretty_to_string(json);
 };

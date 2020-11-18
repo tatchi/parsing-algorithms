@@ -23,7 +23,7 @@ let parse_program = lexbuf =>
     exit(-1);
   };
 
-let res = parse_program(Lexing.from_string("(2+3)*3^"));
+let res = parse_program(Lexing.from_string("(2+3)*3;"));
 
 let json = Lib.Parsed_Ast.toString(res);
 

@@ -26,11 +26,11 @@ program:
   | Statement EOF { $1 }
 
 Statement:
-  | ExpressionStatement { $1 }
+  | ExpressionStatement { ExpressionStatement($1) }
   ;
 
 ExpressionStatement:
-  | Expression SEMICOLON { $1 }
+  | Expression SEMICOLON { Expression($1) }
   ;
 
 Expression:
