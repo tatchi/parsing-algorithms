@@ -21,6 +21,7 @@
     "@opam/dune": ">=2.6",
     "@esy-ocaml/reason": ">= 3.6.0 < 4.0.0",
     "@opam/yojson": "~1.7.0",
+    "@opam/fmt": "~0.8.9",
     "ocaml": "~4.10.0"
   },
   "devDependencies": {

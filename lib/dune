@@ -1,6 +1,6 @@
 (library
  (name lib)
- (libraries yojson))
+ (libraries yojson fmt))
 
 (ocamllex lexer)
 

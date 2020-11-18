@@ -28,5 +28,6 @@ rule read_token =
   | '/' { DIV }
   | '(' { LPAREN }
   | ')' { RPAREN }
+  | ";" { SEMICOLON }
   | eof { EOF }
   | _ {raise (SyntaxError ("Lexer - Illegal character: " ^ Lexing.lexeme lexbuf)) }

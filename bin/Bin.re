@@ -1,23 +1,29 @@
 print_endline("Hello!");
 
-let parse = Lib.Parser.program(Lib.Lexer.read_token);
+open Lexing;
 
-// switch (parse(Lexing.from_string("4+3*2"))) {
-// | None => print_endline("Empty string")
-// | Some(res) => print_endline(string_of_int(res))
-// };
+let print_error_position = lexbuf => {
+  let pos = lexbuf.lex_curr_p;
+  Fmt.str(
+    "Line:%d Position:%d",
+    pos.pos_lnum,
+    pos.pos_cnum - pos.pos_bol + 1,
+  );
+};
+let parse_program = lexbuf =>
+  try(Lib.Parser.program(Lib.Lexer.read_token, lexbuf)) {
+  | Lib.Lexer.SyntaxError(msg) =>
+    let error_msg = Fmt.str("%s: %s@.", print_error_position(lexbuf), msg);
+    print_endline(error_msg);
+    exit(-1);
+  | Lib.Parser.Error =>
+    let error_msg =
+      Fmt.str("%s: syntax error@.", print_error_position(lexbuf));
+    print_endline(error_msg);
+    exit(-1);
+  };
 
-let res = parse(Lexing.from_string("(2+3)*3"));
-
-// let rec toString = node => {
-//   Lib.Parsed_Ast.(
-//     switch (node) {
-//     | NumericLiteral(n) => "NumericLiteral(" ++ string_of_int(n) ++ ")"
-//     | BinaryExpression({left, op, right}) =>
-//       toString(left) ++ op ++ toString(right)
-//     }
-//   );
-// };
+let res = parse_program(Lexing.from_string("(2+3)*3^"));
 
 let json = Lib.Parsed_Ast.toString(res);
 

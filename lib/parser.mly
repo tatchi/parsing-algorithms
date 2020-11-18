@@ -12,6 +12,7 @@
 %token DIV
 %token LPAREN
 %token RPAREN
+%token SEMICOLON
 %token EOF
 
 /* Specify starting production */
@@ -22,7 +23,15 @@
 %% /* Start grammar productions */
 
 program: 
-  | e = Expression EOF { e }
+  | Statement EOF { $1 }
+
+Statement:
+  | ExpressionStatement { $1 }
+  ;
+
+ExpressionStatement:
+  | Expression SEMICOLON { $1 }
+  ;
 
 Expression:
   | expr = AdditiveExpression { expr }
