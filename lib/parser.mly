@@ -26,8 +26,7 @@ program:
   | StatementList EOF { Program($1) }
 
 StatementList:
-  | Statement { [$1] }
-  | StatementList Statement { $1 @ [$2] };
+  | statements = list(Statement) { statements }
   ;
 
 Statement:
