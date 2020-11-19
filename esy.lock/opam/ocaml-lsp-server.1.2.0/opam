@@ -17,13 +17,12 @@ bug-reports: "https://github.com/ocaml/ocaml-lsp/issues"
 depends: [
   "yojson"
   "stdlib-shims"
-  "menhir"
   "ppx_yojson_conv_lib"
   "dune-build-info"
+  "dot-merlin-reader"
   "csexp" {>= "1.2.3"}
   "result" {>= "1.5"}
   "ocamlformat" {with-test}
-  "reason" {with-test}
   "ocamlfind" {>= "1.5.2"}
   "ocaml" {>= "4.06" & < "4.12"}
   "dune" {>= "2.5.0"}
@@ -40,12 +39,12 @@ build: [
     "--release"
   ]
 ]
-x-commit-hash: "fee074471b2c345f7e42c6ed3482363279d4f32c"
+x-commit-hash: "45ebc4ee009f1588eaf5d5a2d0e5137be937501e"
 url {
   src:
-    "https://github.com/ocaml/ocaml-lsp/releases/download/1.1.0/ocaml-lsp-server-1.1.0.tbz"
+    "https://github.com/ocaml/ocaml-lsp/releases/download/1.2.0/jsonrpc-1.2.0.tbz"
   checksum: [
-    "sha256=fa0ca1d3c5c3377f798c221381228a65e8f49fece42715d279ebe91f2f4f74c8"
-    "sha512=c00ad47478a4ddfebe3798895700d2bececa29a610c7757619f47a5b90ede921afa56efc776df3a1c4a8b2f082898423a5806d00c041dae137da1b57ee487a9b"
+    "sha256=e4e56590b9af02160e5af7733763897d7cfe3f9b876692af4d4184ab0fce4bcb"
+    "sha512=724d5190a678ca8a3f3c13915cbfcf8d3cce8efa43e0dde130b14c45065b6ccd22507951e79977bcecf361c7928f271d312b87642bb2c52f33669c3e952a7e1b"
   ]
 }
