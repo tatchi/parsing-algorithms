@@ -18,12 +18,16 @@ let parse_program = lexbuf =>
     exit(-1);
   | Lib.Parser.Error =>
     let error_msg =
-      Fmt.str("%s: syntax error@.", print_error_position(lexbuf));
+      Fmt.str(
+        "%s: syntax error. Token: %s",
+        print_error_position(lexbuf),
+        Lexing.lexeme(lexbuf),
+      );
     print_endline(error_msg);
     exit(-1);
   };
 
-let res = parse_program(Lexing.from_string("(2+3)*3;"));
+let res = parse_program(Lexing.from_string("(2+3)*3; 4+1;"));
 
 let json = Lib.Parsed_Ast.toString(res);
 

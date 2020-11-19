@@ -12,7 +12,9 @@ let string_of_binOp = binOp =>
   | BinOpDiv => "/"
   };
 
-type statement =
+type program =
+  | Program(list(statement))
+and statement =
   | ExpressionStatement(expressionStatement)
 and expressionStatement =
   | Expression(expression)
@@ -25,7 +27,7 @@ and binaryExpression = {
   right: expression,
 };
 
-type t = statement;
+type t = program;
 
 let rec expr_to_json = exp => {
   switch (exp) {
@@ -47,7 +49,7 @@ let expressionStatement_to_json = exprStatement => {
   };
 };
 
-let toJson = statement =>
+let statement_to_json = statement =>
   switch (statement) {
   | ExpressionStatement(exprStatement) =>
     `Assoc([
@@ -56,7 +58,16 @@ let toJson = statement =>
     ])
   };
 
-let toString = statement => {
-  let json = toJson(statement);
+let toJson = prog =>
+  switch (prog) {
+  | Program(statementList) =>
+    `Assoc([
+      ("type", `String("program")),
+      ("body", `List(statementList |> List.map(statement_to_json))),
+    ])
+  };
+
+let toString = program => {
+  let json = toJson(program);
   Yojson.Safe.pretty_to_string(json);
 };

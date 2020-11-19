@@ -23,7 +23,12 @@
 %% /* Start grammar productions */
 
 program: 
-  | Statement EOF { $1 }
+  | StatementList EOF { Program($1) }
+
+StatementList:
+  | Statement { [$1] }
+  | StatementList Statement { $1 @ [$2] };
+  ;
 
 Statement:
   | ExpressionStatement { ExpressionStatement($1) }
