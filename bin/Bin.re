@@ -27,8 +27,9 @@ let parse_program = lexbuf =>
     exit(-1);
   };
 
-let res = parse_program(Lexing.from_string("(2+3)*3; 4+1;"));
+let parsed =
+  parse_program(Lexing.from_channel(Stdlib.open_in("./bin/data.txt")));
 
-let json = Lib.Parsed_Ast.toString(res);
+let json = Lib.Parsed_Ast.toString(parsed);
 
 print_endline(json);
