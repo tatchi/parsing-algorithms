@@ -21,6 +21,7 @@ let newline = '\r' | '\n' | "\r\n"
 rule read_token =
   parse
   | whitespace    { read_token lexbuf }
+  | newline { next_line lexbuf; read_token lexbuf }
   | int { NUMBER (int_of_string (Lexing.lexeme lexbuf))}
   | '+' { PLUS }
   | '-' { MINUS }
