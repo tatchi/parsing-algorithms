@@ -73,11 +73,3 @@ let toString = program => {
   let json = toJson(program);
   Yojson.Safe.pretty_to_string(json);
 };
-
-let add = (x, y) => x + y;
-
-let%expect_test "add two int" = {
-  print_int(add(1, 2));
-  %expect
-  {| 3 |}
-};
