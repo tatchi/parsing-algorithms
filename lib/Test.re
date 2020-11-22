@@ -39,7 +39,7 @@ let%expect_test "add two int" = {
         },
         {
           "type": "BlockStatement",
-          "statements": [
+          "body": [
             {
               "type": "ExpressionStatement",
               "expression": {
@@ -51,7 +51,7 @@ let%expect_test "add two int" = {
             },
             {
               "type": "BlockStatement",
-              "statements": [
+              "body": [
                 {
                   "type": "ExpressionStatement",
                   "expression": {
@@ -65,6 +65,7 @@ let%expect_test "add two int" = {
             }
           ]
         },
+        { "type": "BlockStatement", "body": [] },
         { "type": "EmptyStatement" }
       ]
     } |}

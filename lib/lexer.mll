@@ -32,5 +32,20 @@ rule read_token =
   | "{" { LBRACE }
   | "}" { RBRACE }
   | ";" { SEMICOLON }
+  | "//" { read_single_line_comment lexbuf }
+  | "/*" { read_multi_line_comment lexbuf } 
   | eof { EOF }
   | _ {raise (SyntaxError ("Lexer - Illegal character: " ^ Lexing.lexeme lexbuf)) }
+
+and read_single_line_comment = parse
+  | newline { next_line lexbuf; read_token lexbuf } 
+  | eof { EOF }
+  | _ { read_single_line_comment lexbuf } 
+
+and read_multi_line_comment = parse
+  | "*/" { read_token lexbuf } 
+  | newline { next_line lexbuf; read_multi_line_comment lexbuf } 
+  | eof { raise (SyntaxError ("Lexer - Unexpected EOF - please terminate your comment.")) }
+  | _ { read_multi_line_comment lexbuf } 
+
+
