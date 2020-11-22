@@ -12,6 +12,8 @@
 %token DIV
 %token LPAREN
 %token RPAREN
+%token LBRACE
+%token RBRACE
 %token SEMICOLON
 %token EOF
 
@@ -32,6 +34,7 @@ StatementList:
 Statement:
   | ExpressionStatement { ExpressionStatement($1) }
   | EmptyStatement { EmptyStatement }
+  | BlockStatement { BlockStatement($1) }
   ;
 
 ExpressionStatement:
@@ -40,6 +43,10 @@ ExpressionStatement:
 
 EmptyStatement:
   | SEMICOLON { ($1) }
+  ;
+
+BlockStatement:
+  | LBRACE statements=StatementList RBRACE { statements }
   ;
 
 Expression:

@@ -16,6 +16,7 @@ type program =
   | Program(list(statement))
 and statement =
   | ExpressionStatement(expressionStatement)
+  | BlockStatement(list(statement))
   | EmptyStatement
 and expressionStatement =
   | Expression(expression)
@@ -50,12 +51,17 @@ let expressionStatement_to_json = exprStatement => {
   };
 };
 
-let statement_to_json = statement =>
+let rec statement_to_json = statement =>
   switch (statement) {
   | ExpressionStatement(exprStatement) =>
     `Assoc([
       ("type", `String("ExpressionStatement")),
       ("expression", expressionStatement_to_json(exprStatement)),
+    ])
+  | BlockStatement(statementList) =>
+    `Assoc([
+      ("type", `String("BlockStatement")),
+      ("statements", `List(statementList |> List.map(statement_to_json))),
     ])
   | EmptyStatement => `Assoc([("type", `String("EmptyStatement"))])
   };

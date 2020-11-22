@@ -37,6 +37,20 @@ let%expect_test "add two int" = {
           "type": "ExpressionStatement",
           "expression": { "type": "NumericLiteral", "value": 10 }
         },
+        {
+          "type": "BlockStatement",
+          "statements": [
+            {
+              "type": "ExpressionStatement",
+              "expression": {
+                "type": "BinaryExpression",
+                "op": "+",
+                "left": { "type": "NumericLiteral", "value": 5 },
+                "right": { "type": "NumericLiteral", "value": 1 }
+              }
+            }
+          ]
+        },
         { "type": "EmptyStatement" }
       ]
     } |}
