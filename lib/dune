@@ -1,6 +1,9 @@
 (library
  (name lib)
- (libraries yojson fmt))
+ (libraries yojson fmt)
+ (inline_tests)
+ (preprocess
+  (pps ppx_expect)))
 
 (ocamllex lexer)
 

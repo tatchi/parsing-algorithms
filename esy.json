@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "refmterr": "*",
-    "@opam/ocaml-lsp-server": ">= 1.2.0"
+    "@opam/ocaml-lsp-server": ">= 1.2.0",
+    "@opam/ppx_expect": "v0.14.1"
   }
 }
