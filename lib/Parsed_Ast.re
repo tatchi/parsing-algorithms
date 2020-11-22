@@ -61,7 +61,7 @@ let rec statement_to_json = statement =>
   | BlockStatement(statementList) =>
     `Assoc([
       ("type", `String("BlockStatement")),
-      ("statements", `List(statementList |> List.map(statement_to_json))),
+      ("body", `List(statementList |> List.map(statement_to_json))),
     ])
   | EmptyStatement => `Assoc([("type", `String("EmptyStatement"))])
   };
