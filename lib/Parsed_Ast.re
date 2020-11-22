@@ -16,6 +16,7 @@ type program =
   | Program(list(statement))
 and statement =
   | ExpressionStatement(expressionStatement)
+  | EmptyStatement
 and expressionStatement =
   | Expression(expression)
 and expression =
@@ -56,6 +57,7 @@ let statement_to_json = statement =>
       ("type", `String("ExpressionStatement")),
       ("expression", expressionStatement_to_json(exprStatement)),
     ])
+  | EmptyStatement => `Assoc([("type", `String("EmptyStatement"))])
   };
 
 let toJson = prog =>

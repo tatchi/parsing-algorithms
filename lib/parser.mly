@@ -31,10 +31,15 @@ StatementList:
 
 Statement:
   | ExpressionStatement { ExpressionStatement($1) }
+  | EmptyStatement { EmptyStatement }
   ;
 
 ExpressionStatement:
   | Expression SEMICOLON { Expression($1) }
+  ;
+
+EmptyStatement:
+  | SEMICOLON { ($1) }
   ;
 
 Expression:
