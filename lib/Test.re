@@ -66,6 +66,37 @@ let%expect_test "add two int" = {
           ]
         },
         { "type": "BlockStatement", "body": [] },
+        {
+          "type": "FunctionDeclaration",
+          "name": { "type": "Identifier", "value": "myFn" },
+          "params": [
+            { "type": "Identifier", "value": "a" },
+            { "type": "Identifier", "value": "b" }
+          ],
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "BinaryExpression",
+                  "op": "+",
+                  "left": { "type": "NumericLiteral", "value": 1 },
+                  "right": { "type": "NumericLiteral", "value": 2 }
+                }
+              },
+              {
+                "type": "ReturnStatement",
+                "argument": {
+                  "type": "BinaryExpression",
+                  "op": "+",
+                  "left": { "type": "Identifier", "value": "a" },
+                  "right": { "type": "Identifier", "value": "b" }
+                }
+              }
+            ]
+          }
+        },
         { "type": "EmptyStatement" }
       ]
     } |}
