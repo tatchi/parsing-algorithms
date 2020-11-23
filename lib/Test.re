@@ -97,6 +97,21 @@ let%expect_test "add two int" = {
             ]
           }
         },
+        {
+          "type": "FunctionDeclaration",
+          "name": { "type": "Identifier", "value": "noop" },
+          "params": [],
+          "body": {
+            "type": "BlockStatement",
+            "body": [ { "type": "ReturnStatement", "argument": null } ]
+          }
+        },
+        {
+          "type": "FunctionDeclaration",
+          "name": { "type": "Identifier", "value": "empty" },
+          "params": [],
+          "body": { "type": "BlockStatement", "body": [] }
+        },
         { "type": "EmptyStatement" }
       ]
     } |}

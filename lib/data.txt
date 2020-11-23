@@ -32,4 +32,7 @@ function noop(){
   return;
 }
 
+function empty(){
+}
+
 ;
