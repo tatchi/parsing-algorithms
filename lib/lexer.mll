@@ -32,6 +32,10 @@ rule read_token =
   | "{" { LBRACE }
   | "}" { RBRACE }
   | ";" { SEMICOLON }
+  | "," { COMMA }
+  | "return" { RETURN }
+  | "function" { FUNCTION }
+  | id { IDENTIFIER (Lexing.lexeme lexbuf) }
   | "//" { read_single_line_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 
   | eof { EOF }

@@ -15,6 +15,10 @@
 %token LBRACE
 %token RBRACE
 %token SEMICOLON
+%token FUNCTION
+%token RETURN
+%token <string> IDENTIFIER
+%token COMMA
 %token EOF
 
 /* Specify starting production */
@@ -35,6 +39,24 @@ Statement:
   | ExpressionStatement { ExpressionStatement($1) }
   | EmptyStatement { EmptyStatement }
   | BlockStatement { BlockStatement($1) }
+  | FunctionDeclaration { $1 }
+  | ReturnStatement { $1 }
+  ;
+
+FunctionDeclaration:
+  | FUNCTION name=Identifier LPAREN params=Params RPAREN statement=BlockStatement { FunctionDeclaration(name, params, statement) }
+  ;
+
+Params:
+  | separated_list(COMMA,Identifier) { $1 }
+  ;
+
+Identifier:
+  | IDENTIFIER { $1 }
+  ;
+
+ReturnStatement:
+  | RETURN expr = option(Expression) SEMICOLON { ReturnStatement(expr) }
   ;
 
 ExpressionStatement:
@@ -50,7 +72,7 @@ BlockStatement:
   ;
 
 Expression:
-  | expr = AdditiveExpression { expr }
+  | AdditiveExpression { $1 }
   ;
 
 AdditiveExpression: 
@@ -64,16 +86,17 @@ MultiplicativeExpression:
   ;
 
 PrimaryExpression:
-  | lt = Literal { lt }
-  | p = ParenthesizedExpression { p }
+  | Literal { $1 }
+  | Identifier { Identifier($1) }
+  | ParenthesizedExpression { $1 }
   ;
 
 Literal:
-  | n = NumericLiteral { n }
+  | NumericLiteral { $1 }
   ;
 
 NumericLiteral:
-  | n = NUMBER { NumericLiteral(n) }
+  | NUMBER { NumericLiteral($1) }
   ;
 
 ParenthesizedExpression:
