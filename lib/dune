@@ -1,11 +1,13 @@
 (library
  (name lib)
  (libraries yojson fmt)
- (inline_tests (deps data.txt))
+ (inline_tests
+  (deps data.txt))
  (preprocess
   (pps ppx_expect)))
 
 (ocamllex lexer)
 
 (menhir
- (modules parser))
+ (modules parser)
+ (flags --explain))
