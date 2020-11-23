@@ -28,4 +28,8 @@ function myFn(a,b) {
   return a + b;
 }
 
+function noop(){
+  return;
+}
+
 ;
