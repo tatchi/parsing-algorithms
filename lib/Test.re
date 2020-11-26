@@ -112,6 +112,18 @@ let%expect_test "add two int" = {
           "params": [],
           "body": { "type": "BlockStatement", "body": [] }
         },
+        {
+          "type": "ExpressionStatement",
+          "expression": { "type": "BooleanLiteral", "value": true }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": { "type": "BooleanLiteral", "value": false }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": { "type": "NullLiteral", "value": null }
+        },
         { "type": "EmptyStatement" }
       ]
     } |}

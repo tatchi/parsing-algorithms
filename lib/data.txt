@@ -35,4 +35,8 @@ function noop(){
 function empty(){
 }
 
+true;
+false;
+null;
+
 ;

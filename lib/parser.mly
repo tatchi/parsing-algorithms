@@ -17,6 +17,11 @@
 %token SEMICOLON
 %token FUNCTION
 %token RETURN
+%token TRUE
+%token FALSE
+%token NULL
+// %token IF
+// %token ELSE
 %token <string> IDENTIFIER
 %token COMMA
 %token EOF
@@ -41,7 +46,13 @@ Statement:
   | BlockStatement { BlockStatement($1) }
   | FunctionDeclaration { $1 }
   | ReturnStatement { $1 }
+  // | IfStatement { $1 }
   ;
+
+// IfStatement:
+//   | IF LPAREN Expression RPAREN Statement { IfStatement }
+//   | IF LPAREN Expression RPAREN Statement ELSE Statement { IfStatement }
+//   ;
 
 FunctionDeclaration:
   | FUNCTION name=Identifier LPAREN params=Params RPAREN statement=BlockStatement { FunctionDeclaration(name, params, statement) }
@@ -86,17 +97,29 @@ MultiplicativeExpression:
   ;
 
 PrimaryExpression:
-  | Literal { $1 }
+  | Literal { Literal($1) }
   | Identifier { Identifier($1) }
   | ParenthesizedExpression { $1 }
   ;
 
 Literal:
   | NumericLiteral { $1 }
+  | TrueLiteral { $1 }
+  | FalseLiteral { $1 }
+  | NullLiteral { $1 }
   ;
 
 NumericLiteral:
   | NUMBER { NumericLiteral($1) }
+  ;
+TrueLiteral:
+  | TRUE { BooleanLiteral(true) }
+  ;
+FalseLiteral:
+  | FALSE { BooleanLiteral(false) }
+  ;
+NullLiteral:
+  | NULL { NullLiteral }
   ;
 
 ParenthesizedExpression:

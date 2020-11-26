@@ -33,6 +33,11 @@ rule read_token =
   | "}" { RBRACE }
   | ";" { SEMICOLON }
   | "," { COMMA }
+  | "true" { TRUE }
+  | "false" { FALSE }
+  | "null" { NULL }
+  (* | "if" { IF } *)
+  (* | "else" { ELSE } *)
   | "return" { RETURN }
   | "function" { FUNCTION }
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }

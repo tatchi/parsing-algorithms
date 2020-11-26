@@ -19,11 +19,12 @@ and statement =
   | BlockStatement(blockStatement)
   | FunctionDeclaration(identifier, params, blockStatement)
   | ReturnStatement(option(expression))
+  | IfStatement
   | EmptyStatement
 and expressionStatement =
   | Expression(expression)
 and expression =
-  | NumericLiteral(int)
+  | Literal(literal)
   | Identifier(string)
   | BinaryExpression(binaryExpression)
 and binaryExpression = {
@@ -31,11 +32,25 @@ and binaryExpression = {
   left: expression,
   right: expression,
 }
+and literal =
+  | NumericLiteral(int)
+  | BooleanLiteral(bool)
+  | NullLiteral
 and identifier = string
 and params = list(identifier)
 and blockStatement = list(statement);
 
 type t = program;
+
+let literal_to_json = literal =>
+  switch (literal) {
+  | NumericLiteral(n) =>
+    `Assoc([("type", `String("NumericLiteral")), ("value", `Int(n))])
+  | BooleanLiteral(b) =>
+    `Assoc([("type", `String("BooleanLiteral")), ("value", `Bool(b))])
+  | NullLiteral =>
+    `Assoc([("type", `String("NullLiteral")), ("value", `Null)])
+  };
 
 let identifier_to_json = identifier =>
   `Assoc([
@@ -45,8 +60,7 @@ let identifier_to_json = identifier =>
 
 let rec expr_to_json = exp => {
   switch (exp) {
-  | NumericLiteral(n) =>
-    `Assoc([("type", `String("NumericLiteral")), ("value", `Int(n))])
+  | Literal(lit) => literal_to_json(lit)
   | Identifier(id) => identifier_to_json(id)
   | BinaryExpression(binExp) =>
     `Assoc([
@@ -77,6 +91,7 @@ and statement_to_json = statement =>
       ("expression", expressionStatement_to_json(exprStatement)),
     ])
   | BlockStatement(statementList) => blockStatement_to_json(statementList)
+  | IfStatement => `Null
   | FunctionDeclaration(name, params, statementList) =>
     `Assoc([
       ("type", `String("FunctionDeclaration")),
