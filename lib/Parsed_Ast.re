@@ -31,7 +31,7 @@ and statement =
   | BlockStatement(blockStatement)
   | FunctionDeclaration(identifier, params, blockStatement)
   | ReturnStatement(option(expression))
-  | IfStatement
+  | IfStatement(expression, statement, option(statement))
   | EmptyStatement
 and expressionStatement =
   | Expression(expression)
@@ -103,7 +103,19 @@ and statement_to_json = statement =>
       ("expression", expressionStatement_to_json(exprStatement)),
     ])
   | BlockStatement(statementList) => blockStatement_to_json(statementList)
-  | IfStatement => `Null
+  | IfStatement(test, consequent, maybeAlternate) =>
+    `Assoc([
+      ("type", `String("IfStatement")),
+      ("test", expr_to_json(test)),
+      ("consequent", statement_to_json(consequent)),
+      (
+        "alternate",
+        switch (maybeAlternate) {
+        | None => `Null
+        | Some(alternate) => statement_to_json(alternate)
+        },
+      ),
+    ])
   | FunctionDeclaration(name, params, statementList) =>
     `Assoc([
       ("type", `String("FunctionDeclaration")),

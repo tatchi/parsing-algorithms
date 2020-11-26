@@ -178,6 +178,23 @@ let%expect_test "add two int" = {
             "right": { "type": "NumericLiteral", "value": 3 }
           }
         },
+        {
+          "type": "IfStatement",
+          "test": { "type": "BooleanLiteral", "value": true },
+          "consequent": {
+            "type": "IfStatement",
+            "test": { "type": "BooleanLiteral", "value": false },
+            "consequent": {
+              "type": "ReturnStatement",
+              "argument": { "type": "NumericLiteral", "value": 100 }
+            },
+            "alternate": {
+              "type": "ReturnStatement",
+              "argument": { "type": "NumericLiteral", "value": 200 }
+            }
+          },
+          "alternate": null
+        },
         { "type": "EmptyStatement" }
       ]
     } |}

@@ -30,6 +30,9 @@
 %token COMMA
 %token EOF
 
+%nonassoc THEN
+%nonassoc ELSE
+
 /* Specify starting production */
 %start program
 
@@ -50,13 +53,13 @@ Statement:
   | BlockStatement { BlockStatement($1) }
   | FunctionDeclaration { $1 }
   | ReturnStatement { $1 }
-  // | IfStatement { $1 }
+  | IfStatement { $1 }
   ;
 
-// IfStatement:
-//   | IF LPAREN Expression RPAREN Statement { IfStatement }
-//   | IF LPAREN Expression RPAREN Statement ELSE Statement { IfStatement }
-//   ;
+IfStatement:
+  | IF LPAREN exp=Expression RPAREN consequent=Statement { IfStatement(exp, consequent, None) } %prec THEN
+  | IF LPAREN exp=Expression RPAREN consequent=Statement ELSE alternate=Statement { IfStatement(exp, consequent, Some(alternate)) }
+  ;
 
 FunctionDeclaration:
   | FUNCTION name=Identifier LPAREN params=Params RPAREN statement=BlockStatement { FunctionDeclaration(name, params, statement) }
