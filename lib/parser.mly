@@ -19,9 +19,13 @@
 %token RETURN
 %token TRUE
 %token FALSE
+%token EQUAL
+%token LANGLE
+%token RANGLE
 %token NULL
-// %token IF
-// %token ELSE
+%token EXCLAMATION_MARK
+%token IF
+%token ELSE
 %token <string> IDENTIFIER
 %token COMMA
 %token EOF
@@ -83,8 +87,20 @@ BlockStatement:
   ;
 
 Expression:
-  | AdditiveExpression { $1 }
+  | EqualityExpression { $1 }
   ;
+
+EqualityExpression:
+  | RelationalExpression { $1 }
+  | left=EqualityExpression op=equalityOp right=RelationalExpression { BinaryExpression({left; op; right}) }
+  ;
+
+RelationalExpression:
+  | AdditiveExpression { $1 }
+  | left=RelationalExpression op=relationalOp right=AdditiveExpression { BinaryExpression({left; op; right}) }
+  ;
+
+
 
 AdditiveExpression: 
   | left = AdditiveExpression op=additiveOp right = MultiplicativeExpression { BinaryExpression({left; op; right}) }
@@ -136,3 +152,13 @@ ParenthesizedExpression:
 %inline multiplicativeOp:
 | MULT { BinOpMult }
 | DIV { BinOpDiv }
+
+%inline relationalOp:
+| LANGLE { BinOpLessThan }
+| LANGLE EQUAL { BinOpLessThanEq }
+| RANGLE { BinOpGreaterThan }
+| RANGLE EQUAL { BinOpGreaterThanEq }
+
+%inline equalityOp:
+| EQUAL EQUAL { BinOpEq }
+| EXCLAMATION_MARK EQUAL { BinOpNotEq }

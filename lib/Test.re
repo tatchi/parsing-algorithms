@@ -14,7 +14,7 @@ let%expect_test "add two int" = {
           "type": "ExpressionStatement",
           "expression": {
             "type": "BinaryExpression",
-            "op": "+",
+            "operator": "+",
             "left": { "type": "NumericLiteral", "value": 2 },
             "right": { "type": "NumericLiteral", "value": 2 }
           }
@@ -23,11 +23,11 @@ let%expect_test "add two int" = {
           "type": "ExpressionStatement",
           "expression": {
             "type": "BinaryExpression",
-            "op": "+",
+            "operator": "+",
             "left": { "type": "NumericLiteral", "value": 5 },
             "right": {
               "type": "BinaryExpression",
-              "op": "*",
+              "operator": "*",
               "left": { "type": "NumericLiteral", "value": 3 },
               "right": { "type": "NumericLiteral", "value": 2 }
             }
@@ -44,7 +44,7 @@ let%expect_test "add two int" = {
               "type": "ExpressionStatement",
               "expression": {
                 "type": "BinaryExpression",
-                "op": "+",
+                "operator": "+",
                 "left": { "type": "NumericLiteral", "value": 5 },
                 "right": { "type": "NumericLiteral", "value": 1 }
               }
@@ -56,7 +56,7 @@ let%expect_test "add two int" = {
                   "type": "ExpressionStatement",
                   "expression": {
                     "type": "BinaryExpression",
-                    "op": "+",
+                    "operator": "+",
                     "left": { "type": "NumericLiteral", "value": 1 },
                     "right": { "type": "NumericLiteral", "value": 1 }
                   }
@@ -80,7 +80,7 @@ let%expect_test "add two int" = {
                 "type": "ExpressionStatement",
                 "expression": {
                   "type": "BinaryExpression",
-                  "op": "+",
+                  "operator": "+",
                   "left": { "type": "NumericLiteral", "value": 1 },
                   "right": { "type": "NumericLiteral", "value": 2 }
                 }
@@ -89,7 +89,7 @@ let%expect_test "add two int" = {
                 "type": "ReturnStatement",
                 "argument": {
                   "type": "BinaryExpression",
-                  "op": "+",
+                  "operator": "+",
                   "left": { "type": "Identifier", "value": "a" },
                   "right": { "type": "Identifier", "value": "b" }
                 }
@@ -123,6 +123,60 @@ let%expect_test "add two int" = {
         {
           "type": "ExpressionStatement",
           "expression": { "type": "NullLiteral", "value": null }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": ">",
+            "left": { "type": "NumericLiteral", "value": 5 },
+            "right": { "type": "NumericLiteral", "value": 3 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": ">=",
+            "left": { "type": "NumericLiteral", "value": 5 },
+            "right": { "type": "NumericLiteral", "value": 3 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": "<=",
+            "left": { "type": "NumericLiteral", "value": 5 },
+            "right": { "type": "NumericLiteral", "value": 3 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": "<",
+            "left": { "type": "NumericLiteral", "value": 5 },
+            "right": { "type": "NumericLiteral", "value": 3 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": "==",
+            "left": { "type": "NumericLiteral", "value": 5 },
+            "right": { "type": "NumericLiteral", "value": 3 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": "!=",
+            "left": { "type": "NumericLiteral", "value": 5 },
+            "right": { "type": "NumericLiteral", "value": 3 }
+          }
         },
         { "type": "EmptyStatement" }
       ]
