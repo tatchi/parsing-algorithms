@@ -37,6 +37,8 @@ rule read_token =
   | "!" { EXCLAMATION_MARK }
   | "<" { LANGLE }
   | ">" { RANGLE }
+  | "||" { OR }
+  | "&&" { AND }
   | "true" { TRUE }
   | "false" { FALSE }
   | "null" { NULL }

@@ -195,6 +195,37 @@ let%expect_test "add two int" = {
           },
           "alternate": null
         },
+        {
+          "type": "IfStatement",
+          "test": {
+            "type": "LogicalExpression",
+            "operator": "||",
+            "left": {
+              "type": "LogicalExpression",
+              "operator": "&&",
+              "left": {
+                "type": "BinaryExpression",
+                "operator": "==",
+                "left": { "type": "Identifier", "value": "a" },
+                "right": { "type": "NumericLiteral", "value": 10 }
+              },
+              "right": {
+                "type": "BinaryExpression",
+                "operator": "<",
+                "left": { "type": "Identifier", "value": "b" },
+                "right": { "type": "NumericLiteral", "value": 10 }
+              }
+            },
+            "right": {
+              "type": "BinaryExpression",
+              "operator": "==",
+              "left": { "type": "Identifier", "value": "b" },
+              "right": { "type": "NumericLiteral", "value": 2 }
+            }
+          },
+          "consequent": { "type": "BlockStatement", "body": [] },
+          "alternate": null
+        },
         { "type": "EmptyStatement" }
       ]
     } |}

@@ -8,7 +8,9 @@ type binOp =
   | BinOpGreaterThan
   | BinOpGreaterThanEq
   | BinOpEq
-  | BinOpNotEq;
+  | BinOpNotEq
+  | BinOpAnd
+  | BinOpOr;
 
 let string_of_binOp = binOp =>
   switch (binOp) {
@@ -22,6 +24,8 @@ let string_of_binOp = binOp =>
   | BinOpGreaterThanEq => ">="
   | BinOpEq => "=="
   | BinOpNotEq => "!="
+  | BinOpAnd => "&&"
+  | BinOpOr => "||"
   };
 
 type program =
@@ -39,6 +43,7 @@ and expression =
   | Literal(literal)
   | Identifier(string)
   | BinaryExpression(binaryExpression)
+  | LogicalExpression(binaryExpression)
 and binaryExpression = {
   op: binOp,
   left: expression,
@@ -80,6 +85,13 @@ let rec expr_to_json = exp => {
       ("operator", `String(string_of_binOp(binExp.op))),
       ("left", expr_to_json(binExp.left)),
       ("right", expr_to_json(binExp.right)),
+    ])
+  | LogicalExpression(logicalExpr) =>
+    `Assoc([
+      ("type", `String("LogicalExpression")),
+      ("operator", `String(string_of_binOp(logicalExpr.op))),
+      ("left", expr_to_json(logicalExpr.left)),
+      ("right", expr_to_json(logicalExpr.right)),
     ])
   };
 };

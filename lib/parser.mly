@@ -22,6 +22,8 @@
 %token EQUAL
 %token LANGLE
 %token RANGLE
+%token OR
+%token AND
 %token NULL
 %token EXCLAMATION_MARK
 %token IF
@@ -90,7 +92,17 @@ BlockStatement:
   ;
 
 Expression:
+  | LogicalORExpression { $1 }
+  ;
+
+LogicalORExpression:
+  | LogicalANDExpression { $1 }
+  | left=LogicalORExpression OR right=LogicalANDExpression { LogicalExpression({left; op=BinOpOr; right}) }
+  ;
+
+LogicalANDExpression:
   | EqualityExpression { $1 }
+  | left=LogicalANDExpression AND right=EqualityExpression { LogicalExpression({left; op=BinOpAnd; right}) }
   ;
 
 EqualityExpression:
@@ -102,8 +114,6 @@ RelationalExpression:
   | AdditiveExpression { $1 }
   | left=RelationalExpression op=relationalOp right=AdditiveExpression { BinaryExpression({left; op; right}) }
   ;
-
-
 
 AdditiveExpression: 
   | left = AdditiveExpression op=additiveOp right = MultiplicativeExpression { BinaryExpression({left; op; right}) }
