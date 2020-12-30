@@ -152,14 +152,28 @@ AdditiveExpression:
   ;
 
 MultiplicativeExpression:
-  | left = MultiplicativeExpression op=multiplicativeOp right = PrimaryExpression { BinaryExpression({left; op; right})}
+  | left = MultiplicativeExpression op=multiplicativeOp right = UnaryExpression { BinaryExpression({left; op; right})}
   | expr = UnaryExpression { expr }
   ;
 
 UnaryExpression:
   | PrimaryExpression { $1 }
-  
+  | CallExpression { CallExpression($1) }
   | unaryOp=unaryOp argument=UnaryExpression {UnaryExpression({unaryOp; argument})}
+  ;
+
+CallExpression:
+  | callee=Callee arguments=Arguments {{callee; arguments}}
+  ;
+
+Callee:
+  | LeftHandSideExpression { Callee_LeftHandSideExpression($1) }
+  | CallExpression { Callee_CallExpression($1) }
+  ;
+
+Arguments:
+  | LPAREN separated_list(COMMA, AssignmentExpression) RPAREN { ($2) }
+  ;
 
 PrimaryExpression:
   | Literal { Literal($1) }

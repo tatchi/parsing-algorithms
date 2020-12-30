@@ -1,7 +1,16 @@
--10;
+function getMagic() {
+  return -10;
+}
 
--x;
+-getMagic();
 
-+20;
+function getCallback(){
+  function inner(){
+    return 10;
+  }
+  return inner;
+}
 
--10 + (-x);
+-getCallback()();
+
+10 * -getMagic();

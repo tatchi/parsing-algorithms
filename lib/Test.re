@@ -370,6 +370,97 @@ let%expect_test "parse program" = {
             }
           }
         },
+        {
+          "type": "FunctionDeclaration",
+          "name": { "type": "Identifier", "value": "getMagic" },
+          "params": [],
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "ReturnStatement",
+                "argument": {
+                  "type": "UnaryExpression",
+                  "operator": "-",
+                  "argument": { "type": "NumericLiteral", "value": 10 }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "UnaryExpression",
+            "operator": "-",
+            "argument": {
+              "type": "CallExpression",
+              "callee": { "type": "Identifier", "value": "getMagic" },
+              "arguments": []
+            }
+          }
+        },
+        {
+          "type": "FunctionDeclaration",
+          "name": { "type": "Identifier", "value": "getCallback" },
+          "params": [],
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "FunctionDeclaration",
+                "name": { "type": "Identifier", "value": "inner" },
+                "params": [],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "ReturnStatement",
+                      "argument": { "type": "NumericLiteral", "value": 10 }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "ReturnStatement",
+                "argument": { "type": "Identifier", "value": "inner" }
+              }
+            ]
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "UnaryExpression",
+            "operator": "-",
+            "argument": {
+              "type": "CallExpression",
+              "callee": {
+                "type": "CallExpression",
+                "callee": { "type": "Identifier", "value": "getCallback" },
+                "arguments": []
+              },
+              "arguments": []
+            }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": "*",
+            "left": { "type": "NumericLiteral", "value": 10 },
+            "right": {
+              "type": "UnaryExpression",
+              "operator": "-",
+              "argument": {
+                "type": "CallExpression",
+                "callee": { "type": "Identifier", "value": "getMagic" },
+                "arguments": []
+              }
+            }
+          }
+        },
         { "type": "EmptyStatement" }
       ]
     } |}

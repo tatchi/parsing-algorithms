@@ -74,4 +74,21 @@ let a = 6, c,d = true || 5;
 
 -10 + (-x);
 
+function getMagic() {
+  return -10;
+}
+
+-getMagic();
+
+function getCallback(){
+  function inner(){
+    return 10;
+  }
+  return inner;
+}
+
+-getCallback()();
+
+10 * -getMagic();
+
 ;

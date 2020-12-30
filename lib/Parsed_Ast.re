@@ -71,15 +71,23 @@ and expressionStatement =
   | Expression(expression)
 and expression =
   | Literal(literal)
-  | Identifier(string)
+  | Identifier(identifier)
   | BinaryExpression(binaryExpression)
   | UnaryExpression(unaryExpression)
+  | CallExpression(callExpression)
   | LogicalExpression(binaryExpression)
   | AssignmentExpression(assignmentExpression)
 and unaryExpression = {
   unaryOp,
   argument: expression,
 }
+and callExpression = {
+  callee,
+  arguments: list(expression),
+}
+and callee =
+  | Callee_LeftHandSideExpression(leftHandSideExpression)
+  | Callee_CallExpression(callExpression)
 and assignmentExpression = {
   assignmentOp,
   assignmentLeft: leftHandSideExpression,
@@ -154,8 +162,23 @@ let rec expr_to_json = exp => {
       ("operator", `String(string_of_unaryOp(unaryExp.unaryOp))),
       ("argument", expr_to_json(unaryExp.argument)),
     ])
+  | CallExpression(callExp) => calleExpression_to_json(callExp)
   };
-};
+}
+
+and callee_to_json = callee =>
+  switch (callee) {
+  | Callee_LeftHandSideExpression(expr) =>
+    leftHandSideExpression_to_json(expr)
+  | Callee_CallExpression(expr) => calleExpression_to_json(expr)
+  }
+
+and calleExpression_to_json = callExp =>
+  `Assoc([
+    ("type", `String("CallExpression")),
+    ("callee", callee_to_json(callExp.callee)),
+    ("arguments", `List(callExp.arguments |> List.map(expr_to_json))),
+  ]);
 
 let expressionStatement_to_json = exprStatement => {
   switch (exprStatement) {
