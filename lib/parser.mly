@@ -153,8 +153,13 @@ AdditiveExpression:
 
 MultiplicativeExpression:
   | left = MultiplicativeExpression op=multiplicativeOp right = PrimaryExpression { BinaryExpression({left; op; right})}
-  | expr = PrimaryExpression { expr }
+  | expr = UnaryExpression { expr }
   ;
+
+UnaryExpression:
+  | PrimaryExpression { $1 }
+  
+  | unaryOp=unaryOp argument=UnaryExpression {UnaryExpression({unaryOp; argument})}
 
 PrimaryExpression:
   | Literal { Literal($1) }
@@ -188,6 +193,10 @@ ParenthesizedExpression:
 
 
 /* Operator expressions */
+
+%inline unaryOp:
+| PLUS { UnaryOpPlus }
+| MINUS { UnaryOpMinus }
 
 %inline additiveOp:
 | PLUS { BinOpPlus }

@@ -329,6 +329,47 @@ let%expect_test "parse program" = {
             }
           ]
         },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "UnaryExpression",
+            "operator": "-",
+            "argument": { "type": "NumericLiteral", "value": 10 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "UnaryExpression",
+            "operator": "-",
+            "argument": { "type": "Identifier", "value": "x" }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "UnaryExpression",
+            "operator": "+",
+            "argument": { "type": "NumericLiteral", "value": 20 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "BinaryExpression",
+            "operator": "+",
+            "left": {
+              "type": "UnaryExpression",
+              "operator": "-",
+              "argument": { "type": "NumericLiteral", "value": 10 }
+            },
+            "right": {
+              "type": "UnaryExpression",
+              "operator": "-",
+              "argument": { "type": "Identifier", "value": "x" }
+            }
+          }
+        },
         { "type": "EmptyStatement" }
       ]
     } |}

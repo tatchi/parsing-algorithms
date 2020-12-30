@@ -13,7 +13,7 @@ let next_line lexbuf =
 (* Define helper regexes *)
 let digit = ['0'-'9']
 let alpha = ['a'-'z' 'A'-'Z']
-let int = '-'? digit+  (* regex for integers *)
+let int = digit+  (* regex for integers *)
 let id = (alpha) (alpha|digit|'_')* (* regex for identifier *)
 let whitespace = [' ' '\t']+
 let newline = '\r' | '\n' | "\r\n"

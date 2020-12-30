@@ -12,6 +12,10 @@ type binOp =
   | BinOpAnd
   | BinOpOr;
 
+type unaryOp =
+  | UnaryOpPlus
+  | UnaryOpMinus;
+
 type assignmentOp =
   | AssignmentOpEq
   | AssignmentOpEqMult
@@ -24,6 +28,12 @@ let string_of_assignmentOp = assignmentOp =>
   | AssignmentOpEqMult => "*="
   | AssignmentOpEqPlus => "+="
   | AssignmentOpEqMinus => "-="
+  };
+
+let string_of_unaryOp = unaryOp =>
+  switch (unaryOp) {
+  | UnaryOpPlus => "+"
+  | UnaryOpMinus => "-"
   };
 
 let string_of_binOp = binOp =>
@@ -63,8 +73,13 @@ and expression =
   | Literal(literal)
   | Identifier(string)
   | BinaryExpression(binaryExpression)
+  | UnaryExpression(unaryExpression)
   | LogicalExpression(binaryExpression)
   | AssignmentExpression(assignmentExpression)
+and unaryExpression = {
+  unaryOp,
+  argument: expression,
+}
 and assignmentExpression = {
   assignmentOp,
   assignmentLeft: leftHandSideExpression,
@@ -132,6 +147,12 @@ let rec expr_to_json = exp => {
       ("operator", `String(string_of_assignmentOp(assignExp.assignmentOp))),
       ("left", leftHandSideExpression_to_json(assignExp.assignmentLeft)),
       ("right", expr_to_json(assignExp.assignmentRight)),
+    ])
+  | UnaryExpression(unaryExp) =>
+    `Assoc([
+      ("type", `String("UnaryExpression")),
+      ("operator", `String(string_of_unaryOp(unaryExp.unaryOp))),
+      ("argument", expr_to_json(unaryExp.argument)),
     ])
   };
 };
