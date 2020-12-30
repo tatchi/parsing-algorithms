@@ -264,6 +264,75 @@ let%expect_test "parse program" = {
             }
           }
         },
+        {
+          "type": "VariableStatement",
+          "declarations": [
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "a" },
+              "init": { "type": "NumericLiteral", "value": 5 }
+            }
+          ]
+        },
+        { "type": "EmptyStatement" },
+        {
+          "type": "VariableStatement",
+          "declarations": [
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "a" },
+              "init": {
+                "type": "AssignmentExpression",
+                "operator": "=",
+                "left": { "type": "Identifier", "value": "b" },
+                "right": { "type": "NumericLiteral", "value": 6 }
+              }
+            }
+          ]
+        },
+        { "type": "EmptyStatement" },
+        {
+          "type": "VariableStatement",
+          "declarations": [
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "a" },
+              "init": null
+            },
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "c" },
+              "init": { "type": "NumericLiteral", "value": 7 }
+            }
+          ]
+        },
+        { "type": "EmptyStatement" },
+        {
+          "type": "VariableStatement",
+          "declarations": [
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "a" },
+              "init": { "type": "NumericLiteral", "value": 6 }
+            },
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "c" },
+              "init": null
+            },
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "d" },
+              "init": {
+                "type": "LogicalExpression",
+                "operator": "||",
+                "left": { "type": "BooleanLiteral", "value": true },
+                "right": { "type": "NumericLiteral", "value": 5 }
+              }
+            }
+          ]
+        },
+        { "type": "EmptyStatement" },
         { "type": "EmptyStatement" }
       ]
     } |}

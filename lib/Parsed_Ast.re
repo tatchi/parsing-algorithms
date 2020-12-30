@@ -50,7 +50,13 @@ and statement =
   | FunctionDeclaration(identifier, params, blockStatement)
   | ReturnStatement(option(expression))
   | IfStatement(expression, statement, option(statement))
+  | VariableStatement(list(declaration))
   | EmptyStatement
+and declaration =
+  | VariableDeclaration({
+      id: identifier,
+      init: option(expression),
+    })
 and expressionStatement =
   | Expression(expression)
 and expression =
@@ -136,6 +142,23 @@ let expressionStatement_to_json = exprStatement => {
   };
 };
 
+let declaration_to_json = declaration => {
+  switch (declaration) {
+  | VariableDeclaration(variableDeclaration) =>
+    `Assoc([
+      ("type", `String("VariableDeclaration")),
+      ("id", identifier_to_json(variableDeclaration.id)),
+      (
+        "init",
+        switch (variableDeclaration.init) {
+        | None => `Null
+        | Some(expression) => expr_to_json(expression)
+        },
+      ),
+    ])
+  };
+};
+
 let rec blockStatement_to_json = statementList =>
   `Assoc([
     ("type", `String("BlockStatement")),
@@ -178,6 +201,14 @@ and statement_to_json = statement =>
         | Some(expr) => expr_to_json(expr)
         | None => `Null
         },
+      ),
+    ])
+  | VariableStatement(declarations) =>
+    `Assoc([
+      ("type", `String("VariableStatement")),
+      (
+        "declarations",
+        `List(declarations |> List.map(declaration_to_json)),
       ),
     ])
   | EmptyStatement => `Assoc([("type", `String("EmptyStatement"))])

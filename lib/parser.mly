@@ -24,6 +24,7 @@
 %token RANGLE
 %token OR
 %token AND
+%token LET
 %token NULL
 %token EQUALITY
 %token DIFFERENCE
@@ -60,7 +61,23 @@ Statement:
   | FunctionDeclaration { $1 }
   | ReturnStatement { $1 }
   | IfStatement { $1 }
+  | VariableStatement { $1 }
   ;
+
+VariableStatement:
+  | LET declarations=VariableDeclarationList { VariableStatement(declarations) }
+  ;
+
+VariableDeclarationList:
+  | separated_nonempty_list(COMMA, VariableDeclaration) { $1 }
+  ;
+
+VariableDeclaration:
+  | id=Identifier init=option(VariableInitializer) { VariableDeclaration({id; init}) }
+  ;
+
+VariableInitializer:
+  | EQUAL Expression { $2 }
 
 IfStatement:
   | IF LPAREN exp=Expression RPAREN consequent=Statement { IfStatement(exp, consequent, None) } %prec THEN
@@ -100,7 +117,7 @@ Expression:
   ;
 
 
-AssignmentExpression:
+AssignmentExpression: 
   | LogicalORExpression { $1 }
   | assignmentLeft=LeftHandSideExpression op=assignmentOp assignmentRight=AssignmentExpression { AssignmentExpression({assignmentLeft; assignmentOp=op; assignmentRight}) }
   ;

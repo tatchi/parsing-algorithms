@@ -33,6 +33,7 @@ rule read_token =
   | "}" { RBRACE }
   | ";" { SEMICOLON }
   | "," { COMMA }
+  | "let" { LET }
   | "=" { EQUAL }
   | "<" { LANGLE }
   | ">" { RANGLE }
