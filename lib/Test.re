@@ -1,4 +1,4 @@
-let%expect_test "add two int" = {
+let%expect_test "parse program" = {
   print_endline(Sys.getcwd())
   let parsed =
     Parser.program(Lexer.read_token, Lexing.from_channel(Stdlib.open_in("./data.txt")));
@@ -237,6 +237,30 @@ let%expect_test "add two int" = {
               "operator": "=",
               "left": { "type": "Identifier", "value": "b" },
               "right": { "type": "NumericLiteral", "value": 5 }
+            }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "AssignmentExpression",
+            "operator": "*=",
+            "left": { "type": "Identifier", "value": "a" },
+            "right": {
+              "type": "AssignmentExpression",
+              "operator": "-=",
+              "left": { "type": "Identifier", "value": "b" },
+              "right": {
+                "type": "AssignmentExpression",
+                "operator": "+=",
+                "left": { "type": "Identifier", "value": "c" },
+                "right": {
+                  "type": "AssignmentExpression",
+                  "operator": "=",
+                  "left": { "type": "Identifier", "value": "d" },
+                  "right": { "type": "NumericLiteral", "value": 9 }
+                }
+              }
             }
           }
         },
