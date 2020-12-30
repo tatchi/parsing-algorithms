@@ -12,6 +12,20 @@ type binOp =
   | BinOpAnd
   | BinOpOr;
 
+type assignmentOp =
+  | AssignmentOpEq
+  | AssignmentOpEqMult
+  | AssignmentOpEqPlus
+  | AssignmentOpEqMinus;
+
+let string_of_assignmentOp = assignmentOp =>
+  switch (assignmentOp) {
+  | AssignmentOpEq => "="
+  | AssignmentOpEqMult => "*="
+  | AssignmentOpEqPlus => "+="
+  | AssignmentOpEqMinus => "-="
+  };
+
 let string_of_binOp = binOp =>
   switch (binOp) {
   | BinOpPlus => "+"
@@ -44,6 +58,14 @@ and expression =
   | Identifier(string)
   | BinaryExpression(binaryExpression)
   | LogicalExpression(binaryExpression)
+  | AssignmentExpression(assignmentExpression)
+and assignmentExpression = {
+  assignmentOp,
+  assignmentLeft: leftHandSideExpression,
+  assignmentRight: expression,
+}
+and leftHandSideExpression =
+  | AssignmentIdentifier(identifier)
 and binaryExpression = {
   op: binOp,
   left: expression,
@@ -75,6 +97,11 @@ let identifier_to_json = identifier =>
     ("value", `String(identifier)),
   ]);
 
+let leftHandSideExpression_to_json = (expr: leftHandSideExpression) =>
+  switch (expr) {
+  | AssignmentIdentifier(id) => identifier_to_json(id)
+  };
+
 let rec expr_to_json = exp => {
   switch (exp) {
   | Literal(lit) => literal_to_json(lit)
@@ -92,6 +119,13 @@ let rec expr_to_json = exp => {
       ("operator", `String(string_of_binOp(logicalExpr.op))),
       ("left", expr_to_json(logicalExpr.left)),
       ("right", expr_to_json(logicalExpr.right)),
+    ])
+  | AssignmentExpression(assignExp) =>
+    `Assoc([
+      ("type", `String("AssignmentExpression")),
+      ("operator", `String(string_of_assignmentOp(assignExp.assignmentOp))),
+      ("left", leftHandSideExpression_to_json(assignExp.assignmentLeft)),
+      ("right", expr_to_json(assignExp.assignmentRight)),
     ])
   };
 };

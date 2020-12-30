@@ -25,7 +25,11 @@
 %token OR
 %token AND
 %token NULL
-%token EXCLAMATION_MARK
+%token EQUALITY
+%token DIFFERENCE
+%token COMPLEX_ASSIGNMENT_MULT
+%token COMPLEX_ASSIGNMENT_PLUS
+%token COMPLEX_ASSIGNMENT_MINUS
 %token IF
 %token ELSE
 %token <string> IDENTIFIER
@@ -92,7 +96,17 @@ BlockStatement:
   ;
 
 Expression:
+  | AssignmentExpression { $1 }
+  ;
+
+
+AssignmentExpression:
   | LogicalORExpression { $1 }
+  | assignmentLeft=LeftHandSideExpression op=assignmentOp assignmentRight=AssignmentExpression { AssignmentExpression({assignmentLeft; assignmentOp=op; assignmentRight}) }
+  ;
+
+LeftHandSideExpression:
+  | Identifier { AssignmentIdentifier($1) }
   ;
 
 LogicalORExpression:
@@ -173,5 +187,11 @@ ParenthesizedExpression:
 | RANGLE EQUAL { BinOpGreaterThanEq }
 
 %inline equalityOp:
-| EQUAL EQUAL { BinOpEq }
-| EXCLAMATION_MARK EQUAL { BinOpNotEq }
+| EQUALITY { BinOpEq }
+| DIFFERENCE { BinOpNotEq }
+
+%inline assignmentOp:
+| EQUAL { AssignmentOpEq }
+| COMPLEX_ASSIGNMENT_MULT { AssignmentOpEqMult }
+| COMPLEX_ASSIGNMENT_PLUS { AssignmentOpEqPlus }
+| COMPLEX_ASSIGNMENT_MINUS { AssignmentOpEqMinus }

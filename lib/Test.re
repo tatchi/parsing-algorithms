@@ -226,6 +226,20 @@ let%expect_test "add two int" = {
           "consequent": { "type": "BlockStatement", "body": [] },
           "alternate": null
         },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "AssignmentExpression",
+            "operator": "=",
+            "left": { "type": "Identifier", "value": "a" },
+            "right": {
+              "type": "AssignmentExpression",
+              "operator": "=",
+              "left": { "type": "Identifier", "value": "b" },
+              "right": { "type": "NumericLiteral", "value": 5 }
+            }
+          }
+        },
         { "type": "EmptyStatement" }
       ]
     } |}

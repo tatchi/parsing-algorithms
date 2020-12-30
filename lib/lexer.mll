@@ -34,11 +34,15 @@ rule read_token =
   | ";" { SEMICOLON }
   | "," { COMMA }
   | "=" { EQUAL }
-  | "!" { EXCLAMATION_MARK }
   | "<" { LANGLE }
   | ">" { RANGLE }
   | "||" { OR }
   | "&&" { AND }
+  | "==" { EQUALITY }
+  | "!=" { DIFFERENCE }
+  | "*=" { COMPLEX_ASSIGNMENT_MULT }
+  | "+=" { COMPLEX_ASSIGNMENT_PLUS }
+  | "-=" { COMPLEX_ASSIGNMENT_MINUS }
   | "true" { TRUE }
   | "false" { FALSE }
   | "null" { NULL }
