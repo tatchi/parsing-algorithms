@@ -274,7 +274,6 @@ let%expect_test "parse program" = {
             }
           ]
         },
-        { "type": "EmptyStatement" },
         {
           "type": "VariableStatement",
           "declarations": [
@@ -290,7 +289,6 @@ let%expect_test "parse program" = {
             }
           ]
         },
-        { "type": "EmptyStatement" },
         {
           "type": "VariableStatement",
           "declarations": [
@@ -306,7 +304,6 @@ let%expect_test "parse program" = {
             }
           ]
         },
-        { "type": "EmptyStatement" },
         {
           "type": "VariableStatement",
           "declarations": [
@@ -332,7 +329,6 @@ let%expect_test "parse program" = {
             }
           ]
         },
-        { "type": "EmptyStatement" },
         { "type": "EmptyStatement" }
       ]
     } |}

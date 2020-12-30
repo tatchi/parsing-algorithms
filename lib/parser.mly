@@ -69,7 +69,7 @@ VariableStatement:
   ;
 
 VariableDeclarationList:
-  | separated_nonempty_list(COMMA, VariableDeclaration) { $1 }
+  | separated_nonempty_list(COMMA, VariableDeclaration) SEMICOLON { $1 }
   ;
 
 VariableDeclaration:
