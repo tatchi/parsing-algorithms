@@ -95,4 +95,12 @@ function getCallback(){
 
 let s = "my super string";
 
+while (i > 0){
+  i = i - 1;
+}
+
+for(i=0; i < 5; i<5){
+  i = i - 1;
+}
+
 ;

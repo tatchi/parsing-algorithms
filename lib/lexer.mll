@@ -36,6 +36,8 @@ rule read_token =
   | ";" { SEMICOLON }
   | "," { COMMA }
   | "let" { LET }
+  | "while" { WHILE }
+  | "for" { FOR }
   | "=" { EQUAL }
   | "<" { LANGLE }
   | ">" { RANGLE }

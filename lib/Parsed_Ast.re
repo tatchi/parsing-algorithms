@@ -61,6 +61,7 @@ and statement =
   | ReturnStatement(option(expression))
   | IfStatement(expression, statement, option(statement))
   | VariableStatement(list(declaration))
+  | IterationStatement(iterationStatement)
   | EmptyStatement
 and declaration =
   | VariableDeclaration({
@@ -107,7 +108,18 @@ and literal =
   | StringLiteral(string)
 and identifier = string
 and params = list(identifier)
-and blockStatement = list(statement);
+and blockStatement = list(statement)
+and iterationStatement =
+  | WhileStatement({
+      test: expression,
+      body: statement,
+    })
+  | ForStatement({
+      init: expression,
+      test: expression,
+      update: expression,
+      body: statement,
+    });
 
 type t = program;
 
@@ -239,6 +251,24 @@ and statement_to_json = statement =>
       ("params", `List(params |> List.map(identifier_to_json))),
       ("body", blockStatement_to_json(statementList)),
     ])
+  | IterationStatement(iterationStatement) =>
+    switch (iterationStatement) {
+    | WhileStatement(statement) =>
+      `Assoc([
+        ("type", `String("WhileStatement")),
+        ("test", expr_to_json(statement.test)),
+        ("body", statement_to_json(statement.body)),
+      ])
+    | ForStatement(statement) =>
+      `Assoc([
+        ("type", `String("ForStatement")),
+        ("init", expr_to_json(statement.init)),
+        ("test", expr_to_json(statement.test)),
+        ("update", expr_to_json(statement.update)),
+        ("body", statement_to_json(statement.body)),
+      ])
+    }
+
   | ReturnStatement(maybeExpr) =>
     `Assoc([
       ("type", `String("ReturnStatement")),

@@ -26,6 +26,8 @@
 %token OR
 %token AND
 %token LET
+%token WHILE
+%token FOR
 %token NULL
 %token EQUALITY
 %token DIFFERENCE
@@ -63,6 +65,20 @@ Statement:
   | ReturnStatement { $1 }
   | IfStatement { $1 }
   | VariableStatement { $1 }
+  | IterationStatement { $1 }
+  ;
+
+IterationStatement:
+  | WhileStatement { IterationStatement($1) }
+  | ForStatement { IterationStatement($1) }
+  ;
+
+WhileStatement:
+  | WHILE LPAREN test=Expression RPAREN body=Statement { WhileStatement({test;body}) }
+  ;
+
+ForStatement:
+  | FOR LPAREN init=Expression SEMICOLON test=Expression SEMICOLON update=Expression RPAREN body=Statement { ForStatement({init;test;update;body}) }
   ;
 
 VariableStatement:

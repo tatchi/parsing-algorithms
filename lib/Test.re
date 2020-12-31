@@ -475,6 +475,74 @@ let%expect_test "parse program" = {
             }
           ]
         },
+        {
+          "type": "WhileStatement",
+          "test": {
+            "type": "BinaryExpression",
+            "operator": ">",
+            "left": { "type": "Identifier", "value": "i" },
+            "right": { "type": "NumericLiteral", "value": 0 }
+          },
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "AssignmentExpression",
+                  "operator": "=",
+                  "left": { "type": "Identifier", "value": "i" },
+                  "right": {
+                    "type": "BinaryExpression",
+                    "operator": "-",
+                    "left": { "type": "Identifier", "value": "i" },
+                    "right": { "type": "NumericLiteral", "value": 1 }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "ForStatement",
+          "init": {
+            "type": "AssignmentExpression",
+            "operator": "=",
+            "left": { "type": "Identifier", "value": "i" },
+            "right": { "type": "NumericLiteral", "value": 0 }
+          },
+          "test": {
+            "type": "BinaryExpression",
+            "operator": "<",
+            "left": { "type": "Identifier", "value": "i" },
+            "right": { "type": "NumericLiteral", "value": 5 }
+          },
+          "update": {
+            "type": "BinaryExpression",
+            "operator": "<",
+            "left": { "type": "Identifier", "value": "i" },
+            "right": { "type": "NumericLiteral", "value": 5 }
+          },
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "AssignmentExpression",
+                  "operator": "=",
+                  "left": { "type": "Identifier", "value": "i" },
+                  "right": {
+                    "type": "BinaryExpression",
+                    "operator": "-",
+                    "left": { "type": "Identifier", "value": "i" },
+                    "right": { "type": "NumericLiteral", "value": 1 }
+                  }
+                }
+              }
+            ]
+          }
+        },
         { "type": "EmptyStatement" }
       ]
     } |}
