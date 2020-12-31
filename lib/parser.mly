@@ -16,6 +16,7 @@
 %token RBRACE
 %token SEMICOLON
 %token FUNCTION
+%token <string> STRING
 %token RETURN
 %token TRUE
 %token FALSE
@@ -186,6 +187,7 @@ Literal:
   | TrueLiteral { $1 }
   | FalseLiteral { $1 }
   | NullLiteral { $1 }
+  | StringLiteral { $1 }
   ;
 
 NumericLiteral:
@@ -200,6 +202,9 @@ FalseLiteral:
 NullLiteral:
   | NULL { NullLiteral }
   ;
+
+StringLiteral:
+  | STRING { StringLiteral($1) }
 
 ParenthesizedExpression:
   | LPAREN expr = Expression RPAREN { expr }

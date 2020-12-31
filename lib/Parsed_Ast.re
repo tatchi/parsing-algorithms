@@ -104,6 +104,7 @@ and literal =
   | NumericLiteral(int)
   | BooleanLiteral(bool)
   | NullLiteral
+  | StringLiteral(string)
 and identifier = string
 and params = list(identifier)
 and blockStatement = list(statement);
@@ -118,6 +119,8 @@ let literal_to_json = literal =>
     `Assoc([("type", `String("BooleanLiteral")), ("value", `Bool(b))])
   | NullLiteral =>
     `Assoc([("type", `String("NullLiteral")), ("value", `Null)])
+  | StringLiteral(s) =>
+    `Assoc([("type", `String("StringLiteral")), ("value", `String(s))])
   };
 
 let identifier_to_json = identifier =>

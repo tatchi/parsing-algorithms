@@ -1,16 +1,3 @@
-function getMagic() {
-  return -10;
-}
+"hello world";
 
--getMagic();
-
-function getCallback(){
-  function inner(){
-    return 10;
-  }
-  return inner;
-}
-
--getCallback()();
-
-10 * -getMagic();
+let s = "my super string";

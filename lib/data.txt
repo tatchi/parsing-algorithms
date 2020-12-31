@@ -91,4 +91,8 @@ function getCallback(){
 
 10 * -getMagic();
 
+"hello world";
+
+let s = "my super string";
+
 ;

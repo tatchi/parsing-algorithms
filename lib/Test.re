@@ -461,6 +461,20 @@ let%expect_test "parse program" = {
             }
           }
         },
+        {
+          "type": "ExpressionStatement",
+          "expression": { "type": "StringLiteral", "value": "hello world" }
+        },
+        {
+          "type": "VariableStatement",
+          "declarations": [
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "s" },
+              "init": { "type": "StringLiteral", "value": "my super string" }
+            }
+          ]
+        },
         { "type": "EmptyStatement" }
       ]
     } |}
