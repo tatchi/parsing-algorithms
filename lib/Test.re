@@ -6,7 +6,7 @@ let%expect_test "parse program" = {
   print_endline(json);
   %expect
   {|
-    /Users/corentin/Documents/essentials-of-parsing/_build/default/lib
+    /Users/corentin/Dev/parsing-algorithms/_build/default/lib
     {
       "type": "program",
       "body": [
