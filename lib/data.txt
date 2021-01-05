@@ -96,11 +96,18 @@ function getCallback(){
 let s = "my super string";
 
 while (i > 0){
+  console.log(i, s[i]);
   i = i - 1;
 }
 
 for(i=0; i < 5; i<5){
   i = i - 1;
 }
+
+foo.bar = 10;
+
+s[i] = 20;
+
+foo.bar.baz;
 
 ;

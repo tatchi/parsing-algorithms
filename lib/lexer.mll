@@ -27,12 +27,15 @@ rule read_token =
   | '"'      { read_string (Buffer.create 17) lexbuf }
   | '+' { PLUS }
   | '-' { MINUS }
+  | '.' { DOT }
   | '*' { MULT }
   | '/' { DIV }
   | '(' { LPAREN }
   | ')' { RPAREN }
   | "{" { LBRACE }
   | "}" { RBRACE }
+  | "[" { LBRACKET }
+  | "]" { RBRACKET }
   | ";" { SEMICOLON }
   | "," { COMMA }
   | "let" { LET }

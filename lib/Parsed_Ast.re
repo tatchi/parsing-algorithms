@@ -78,6 +78,7 @@ and expression =
   | CallExpression(callExpression)
   | LogicalExpression(binaryExpression)
   | AssignmentExpression(assignmentExpression)
+  | LeftHandSideExpression(leftHandSideExpression)
 and unaryExpression = {
   unaryOp,
   argument: expression,
@@ -95,7 +96,16 @@ and assignmentExpression = {
   assignmentRight: expression,
 }
 and leftHandSideExpression =
-  | AssignmentIdentifier(identifier)
+  | LHandSideMemberExpression(memberExpression)
+and memberExpression =
+  | MExpIdentifier(identifier)
+  | MExpExpression({
+      object_: memberExpression,
+      property: memberExpressionProperty,
+    })
+and memberExpressionProperty =
+  | MExpPropertyIdentifier(identifier)
+  | MExpPropertyExp(expression)
 and binaryExpression = {
   op: binOp,
   left: expression,
@@ -141,11 +151,6 @@ let identifier_to_json = identifier =>
     ("value", `String(identifier)),
   ]);
 
-let leftHandSideExpression_to_json = (expr: leftHandSideExpression) =>
-  switch (expr) {
-  | AssignmentIdentifier(id) => identifier_to_json(id)
-  };
-
 let rec expr_to_json = exp => {
   switch (exp) {
   | Literal(lit) => literal_to_json(lit)
@@ -178,6 +183,7 @@ let rec expr_to_json = exp => {
       ("argument", expr_to_json(unaryExp.argument)),
     ])
   | CallExpression(callExp) => calleExpression_to_json(callExp)
+  | LeftHandSideExpression(exp) => leftHandSideExpression_to_json(exp)
   };
 }
 
@@ -193,7 +199,29 @@ and calleExpression_to_json = callExp =>
     ("type", `String("CallExpression")),
     ("callee", callee_to_json(callExp.callee)),
     ("arguments", `List(callExp.arguments |> List.map(expr_to_json))),
-  ]);
+  ])
+
+and memberExpression_to_json = mExp =>
+  switch (mExp) {
+  | MExpIdentifier(id) => identifier_to_json(id)
+  | MExpExpression(exp) =>
+    `Assoc([
+      ("type", `String("MemberExpression")),
+      ("object", memberExpression_to_json(exp.object_)),
+      (
+        "property",
+        switch (exp.property) {
+        | MExpPropertyIdentifier(id) => identifier_to_json(id)
+        | MExpPropertyExp(e) => expr_to_json(e)
+        },
+      ),
+    ])
+  }
+
+and leftHandSideExpression_to_json = (expr: leftHandSideExpression) =>
+  switch (expr) {
+  | LHandSideMemberExpression(mExp) => memberExpression_to_json(mExp)
+  };
 
 let expressionStatement_to_json = exprStatement => {
   switch (exprStatement) {

@@ -489,6 +489,25 @@ let%expect_test "parse program" = {
               {
                 "type": "ExpressionStatement",
                 "expression": {
+                  "type": "CallExpression",
+                  "callee": {
+                    "type": "MemberExpression",
+                    "object": { "type": "Identifier", "value": "console" },
+                    "property": { "type": "Identifier", "value": "log" }
+                  },
+                  "arguments": [
+                    { "type": "Identifier", "value": "i" },
+                    {
+                      "type": "MemberExpression",
+                      "object": { "type": "Identifier", "value": "s" },
+                      "property": { "type": "Identifier", "value": "i" }
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "ExpressionStatement",
+                "expression": {
                   "type": "AssignmentExpression",
                   "operator": "=",
                   "left": { "type": "Identifier", "value": "i" },
@@ -541,6 +560,44 @@ let%expect_test "parse program" = {
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "AssignmentExpression",
+            "operator": "=",
+            "left": {
+              "type": "MemberExpression",
+              "object": { "type": "Identifier", "value": "foo" },
+              "property": { "type": "Identifier", "value": "bar" }
+            },
+            "right": { "type": "NumericLiteral", "value": 10 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "AssignmentExpression",
+            "operator": "=",
+            "left": {
+              "type": "MemberExpression",
+              "object": { "type": "Identifier", "value": "s" },
+              "property": { "type": "Identifier", "value": "i" }
+            },
+            "right": { "type": "NumericLiteral", "value": 20 }
+          }
+        },
+        {
+          "type": "ExpressionStatement",
+          "expression": {
+            "type": "MemberExpression",
+            "object": {
+              "type": "MemberExpression",
+              "object": { "type": "Identifier", "value": "foo" },
+              "property": { "type": "Identifier", "value": "bar" }
+            },
+            "property": { "type": "Identifier", "value": "baz" }
           }
         },
         { "type": "EmptyStatement" }

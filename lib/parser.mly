@@ -14,6 +14,9 @@
 %token RPAREN
 %token LBRACE
 %token RBRACE
+%token LBRACKET
+%token RBRACKET
+%token DOT
 %token SEMICOLON
 %token FUNCTION
 %token <string> STRING
@@ -140,7 +143,20 @@ AssignmentExpression:
   ;
 
 LeftHandSideExpression:
-  | Identifier { AssignmentIdentifier($1) }
+  | MemberExpression { LHandSideMemberExpression($1) }
+  ;
+
+/*
+foor = 10
+foo['bar'] = 10
+foo[0] = 10
+foo[0] = 10
+foo.bar.baz = 10
+*/
+MemberExpression:
+  | Identifier { MExpIdentifier($1) }
+  | MemberExpression DOT Identifier { MExpExpression({object_=$1; property=MExpPropertyIdentifier($3)}) }
+  | MemberExpression LBRACKET Expression RBRACKET { MExpExpression({object_=$1; property=MExpPropertyExp($3)}) }
   ;
 
 LogicalORExpression:
@@ -194,7 +210,7 @@ Arguments:
 
 PrimaryExpression:
   | Literal { Literal($1) }
-  | Identifier { Identifier($1) }
+  | LeftHandSideExpression { LeftHandSideExpression($1) }
   | ParenthesizedExpression { $1 }
   ;
 
