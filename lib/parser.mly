@@ -32,6 +32,11 @@
 %token WHILE
 %token FOR
 %token NULL
+%token CLASS
+%token EXTENDS
+%token SUPER
+%token THIS
+%token NEW
 %token EQUALITY
 %token DIFFERENCE
 %token COMPLEX_ASSIGNMENT_MULT
@@ -69,6 +74,15 @@ Statement:
   | IfStatement { $1 }
   | VariableStatement { $1 }
   | IterationStatement { $1 }
+  | ClassDeclaration { ClassDeclaration($1) }
+  ;
+
+ClassDeclaration:
+  | CLASS Identifier option(ClassExtends) Statement { {id=$2; superclass=$3;body=$4} }
+  ;
+
+ClassExtends: 
+  | EXTENDS Identifier { $2 }
   ;
 
 IterationStatement:
@@ -155,9 +169,13 @@ foo.bar.baz = 10
 */
 MemberExpression:
   | Identifier { MExpIdentifier($1) }
+  | ThisExpression { MexpThisExpression }
   | MemberExpression DOT Identifier { MExpExpression({object_=$1; property=MExpPropertyIdentifier($3)}) }
   | MemberExpression LBRACKET Expression RBRACKET { MExpExpression({object_=$1; property=MExpPropertyExp($3)}) }
   ;
+
+ThisExpression:
+  | THIS { $1 }
 
 LogicalORExpression:
   | LogicalANDExpression { $1 }
@@ -196,8 +214,12 @@ UnaryExpression:
   ;
 
 CallExpression:
-  | callee=Callee arguments=Arguments {{callee; arguments}}
+  | callee=Callee arguments=Arguments {RegularCallExp({callee; arguments})}
+  | Super arguments=Arguments {SuperCallExp({arguments})}
   ;
+
+Super:
+  SUPER { $1 }
 
 Callee:
   | LeftHandSideExpression { Callee_LeftHandSideExpression($1) }
@@ -210,8 +232,13 @@ Arguments:
 
 PrimaryExpression:
   | Literal { Literal($1) }
+  | NewExpression { NewExpression($1) }
   | LeftHandSideExpression { LeftHandSideExpression($1) }
   | ParenthesizedExpression { $1 }
+  ;
+
+NewExpression:
+  | NEW MemberExpression Arguments { ({callee=$2;arguments=$3}) }
   ;
 
 Literal:

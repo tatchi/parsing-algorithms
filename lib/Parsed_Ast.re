@@ -62,7 +62,13 @@ and statement =
   | IfStatement(expression, statement, option(statement))
   | VariableStatement(list(declaration))
   | IterationStatement(iterationStatement)
+  | ClassDeclaration(classDeclaration)
   | EmptyStatement
+and classDeclaration = {
+  id: identifier,
+  superclass: option(identifier),
+  body: statement,
+}
 and declaration =
   | VariableDeclaration({
       id: identifier,
@@ -73,20 +79,27 @@ and expressionStatement =
 and expression =
   | Literal(literal)
   | Identifier(identifier)
+  | NewExpression(newExpression)
   | BinaryExpression(binaryExpression)
   | UnaryExpression(unaryExpression)
   | CallExpression(callExpression)
   | LogicalExpression(binaryExpression)
   | AssignmentExpression(assignmentExpression)
   | LeftHandSideExpression(leftHandSideExpression)
+and newExpression = {
+  callee: memberExpression,
+  arguments: list(expression),
+}
 and unaryExpression = {
   unaryOp,
   argument: expression,
 }
-and callExpression = {
-  callee,
-  arguments: list(expression),
-}
+and callExpression =
+  | RegularCallExp({
+      callee,
+      arguments: list(expression),
+    })
+  | SuperCallExp({arguments: list(expression)})
 and callee =
   | Callee_LeftHandSideExpression(leftHandSideExpression)
   | Callee_CallExpression(callExpression)
@@ -99,6 +112,7 @@ and leftHandSideExpression =
   | LHandSideMemberExpression(memberExpression)
 and memberExpression =
   | MExpIdentifier(identifier)
+  | MexpThisExpression
   | MExpExpression({
       object_: memberExpression,
       property: memberExpressionProperty,
@@ -183,6 +197,12 @@ let rec expr_to_json = exp => {
       ("argument", expr_to_json(unaryExp.argument)),
     ])
   | CallExpression(callExp) => calleExpression_to_json(callExp)
+  | NewExpression(newExp) =>
+    `Assoc([
+      ("type", `String("NewExpression")),
+      ("callee", memberExpression_to_json(newExp.callee)),
+      ("arguments", `List(newExp.arguments |> List.map(expr_to_json))),
+    ])
   | LeftHandSideExpression(exp) => leftHandSideExpression_to_json(exp)
   };
 }
@@ -195,14 +215,23 @@ and callee_to_json = callee =>
   }
 
 and calleExpression_to_json = callExp =>
-  `Assoc([
-    ("type", `String("CallExpression")),
-    ("callee", callee_to_json(callExp.callee)),
-    ("arguments", `List(callExp.arguments |> List.map(expr_to_json))),
-  ])
-
+  switch (callExp) {
+  | RegularCallExp(exp) =>
+    `Assoc([
+      ("type", `String("CallExpression")),
+      ("callee", callee_to_json(exp.callee)),
+      ("arguments", `List(exp.arguments |> List.map(expr_to_json))),
+    ])
+  | SuperCallExp(exp) =>
+    `Assoc([
+      ("type", `String("CallExpression")),
+      ("callee", `String("Super")),
+      ("arguments", `List(exp.arguments |> List.map(expr_to_json))),
+    ])
+  }
 and memberExpression_to_json = mExp =>
   switch (mExp) {
+  | MexpThisExpression => `Assoc([("type", `String("ThisExpression"))])
   | MExpIdentifier(id) => identifier_to_json(id)
   | MExpExpression(exp) =>
     `Assoc([
@@ -315,6 +344,19 @@ and statement_to_json = statement =>
         "declarations",
         `List(declarations |> List.map(declaration_to_json)),
       ),
+    ])
+  | ClassDeclaration(classDeclaration) =>
+    `Assoc([
+      ("type", `String("ClassDeclaration")),
+      ("id", identifier_to_json(classDeclaration.id)),
+      (
+        "superclass",
+        switch (classDeclaration.superclass) {
+        | None => `Null
+        | Some(id) => identifier_to_json(id)
+        },
+      ),
+      ("body", statement_to_json(classDeclaration.body)),
     ])
   | EmptyStatement => `Assoc([("type", `String("EmptyStatement"))])
   };

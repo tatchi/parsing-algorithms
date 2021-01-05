@@ -110,4 +110,19 @@ s[i] = 20;
 
 foo.bar.baz;
 
+class Point {
+  this;
+  this.a = 5;
+  this[this.a] = 7;
+}
+
+class Point3D extends Point {
+  super(5);
+  function getX(){
+    return this.x;
+  }
+}
+
+let a = new Point(10,20);
+
 ;

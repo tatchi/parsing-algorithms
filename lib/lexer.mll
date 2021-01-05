@@ -58,6 +58,11 @@ rule read_token =
   | "else" { ELSE }
   | "return" { RETURN }
   | "function" { FUNCTION }
+  | "class" { CLASS }
+  | "extends" { EXTENDS }
+  | "super" { SUPER }
+  | "this" { THIS }
+  | "new" { NEW }
   | id { IDENTIFIER (Lexing.lexeme lexbuf) }
   | "//" { read_single_line_comment lexbuf }
   | "/*" { read_multi_line_comment lexbuf } 

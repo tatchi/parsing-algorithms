@@ -1,1 +1,6 @@
-foo[getName()] = 10;
+class Point {
+  this;
+}
+
+let a = new Point(10,20);
+

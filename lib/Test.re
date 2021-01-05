@@ -600,6 +600,103 @@ let%expect_test "parse program" = {
             "property": { "type": "Identifier", "value": "baz" }
           }
         },
+        {
+          "type": "ClassDeclaration",
+          "id": { "type": "Identifier", "value": "Point" },
+          "superclass": null,
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "ExpressionStatement",
+                "expression": { "type": "ThisExpression" }
+              },
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "AssignmentExpression",
+                  "operator": "=",
+                  "left": {
+                    "type": "MemberExpression",
+                    "object": { "type": "ThisExpression" },
+                    "property": { "type": "Identifier", "value": "a" }
+                  },
+                  "right": { "type": "NumericLiteral", "value": 5 }
+                }
+              },
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "AssignmentExpression",
+                  "operator": "=",
+                  "left": {
+                    "type": "MemberExpression",
+                    "object": { "type": "ThisExpression" },
+                    "property": {
+                      "type": "MemberExpression",
+                      "object": { "type": "ThisExpression" },
+                      "property": { "type": "Identifier", "value": "a" }
+                    }
+                  },
+                  "right": { "type": "NumericLiteral", "value": 7 }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "ClassDeclaration",
+          "id": { "type": "Identifier", "value": "Point3D" },
+          "superclass": { "type": "Identifier", "value": "Point" },
+          "body": {
+            "type": "BlockStatement",
+            "body": [
+              {
+                "type": "ExpressionStatement",
+                "expression": {
+                  "type": "CallExpression",
+                  "callee": "Super",
+                  "arguments": [ { "type": "NumericLiteral", "value": 5 } ]
+                }
+              },
+              {
+                "type": "FunctionDeclaration",
+                "name": { "type": "Identifier", "value": "getX" },
+                "params": [],
+                "body": {
+                  "type": "BlockStatement",
+                  "body": [
+                    {
+                      "type": "ReturnStatement",
+                      "argument": {
+                        "type": "MemberExpression",
+                        "object": { "type": "ThisExpression" },
+                        "property": { "type": "Identifier", "value": "x" }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "VariableStatement",
+          "declarations": [
+            {
+              "type": "VariableDeclaration",
+              "id": { "type": "Identifier", "value": "a" },
+              "init": {
+                "type": "NewExpression",
+                "callee": { "type": "Identifier", "value": "Point" },
+                "arguments": [
+                  { "type": "NumericLiteral", "value": 10 },
+                  { "type": "NumericLiteral", "value": 20 }
+                ]
+              }
+            }
+          ]
+        },
         { "type": "EmptyStatement" }
       ]
     } |}
